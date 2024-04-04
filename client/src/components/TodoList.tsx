@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TodoItem } from "./TodoItem";
 
 // Define the Todo interface
@@ -44,6 +44,14 @@ export const TodoList = () => {
       )
     );
   };
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch("/api/todos");
+      const data = await response.json();
+      setTodos(data);
+    }
+  }, []);
 
   return (
     <>

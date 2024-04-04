@@ -1,6 +1,7 @@
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import { TodoList } from "./components/TodoList";
+import { Record } from "./components/TempSubmit";
 import "./App.css";
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         </a>
       </div>
       <TodoList />
+      <Record />
     </>
   );
 }
