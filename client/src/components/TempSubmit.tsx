@@ -1,5 +1,6 @@
 // component to create a new record or update an existing record
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 
 export const Record = () => {
   const [form, setForm] = useState({
@@ -8,6 +9,7 @@ export const Record = () => {
     level: "",
   });
   const [isNew, setIsNew] = useState(true); // check if the record is new or existing
+  const navigate = useNavigate(); // navigate to different routes
 
   // method to update the form data
   function updateForm(value: any) {
@@ -50,6 +52,7 @@ export const Record = () => {
       console.error(`A problem occurred with your fetch operation:`, error);
     } finally {
       setForm({ company: "", position: "", level: "" }); // reset form
+      navigate("/record/list"); // navigate to record list
     }
   }
 
