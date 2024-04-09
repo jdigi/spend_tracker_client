@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { TodoList } from "./components/TodoList";
 import { Record } from "./components/TempSubmit";
 import { RecordList } from "./components/Record";
+import { JobEntry } from "./pages/Job";
+import { JobList } from "./pages/JobList";
 import "./App.css";
 
 function App() {
@@ -29,16 +31,23 @@ function App() {
             <li>
               <Link to="/record/list">Record List</Link>
             </li>
+            <li>
+              <Link to="/job">Add Job</Link>
+            </li>
+            <li>
+              <Link to="/job/list">Job List</Link>
+            </li>
           </ul>
         </nav>
         <Routes>
           <Route path="/" element={<TodoList />} />
           <Route path="/record" element={<Record />} />
           <Route path="/record/list" element={<RecordList />} />
+          <Route path="/job" element={<JobEntry />} />
+          <Route path="/job/list" element={<JobList />} />
+          <Route path="/job/:id" element={<JobEntry />} />
         </Routes>
       </BrowserRouter>
-      {/* <TodoList />
-      <Record /> */}
     </>
   );
 }
