@@ -53,16 +53,27 @@ export const JobList = () => {
     navigate(`/job/${id}`);
   };
 
+  // TODO: add sorting by company name, status, etc.
+  const sortDataByStringName = (data: JobProps[], key: "company") => {
+    return data.sort((a, b) => {
+      const textA = a[key].toUpperCase();
+      const textB = b[key].toUpperCase();
+      return textA < textB ? -1 : textA > textB ? 1 : 0;
+    });
+  };
+
+  // TODO: add pagination
+
   return (
     <>
       <div className="w-full mx-auto flex justify-center">
         <div className="w-[800px]">
-          <header className="grid grid-cols-5">
-            <div>Company</div>
-            <div>Position</div>
-            <div>First Round</div>
-            <div>Second Round</div>
-            <div>Rejection</div>
+          <header className="grid grid-cols-7 font-bold text-sm">
+            <div className="pl-2">Company</div>
+            <div className="col-span-2 pl-2">Position</div>
+            <div className="text-center">1st Round</div>
+            <div className="text-center">2nd Round</div>
+            <div className="text-center">Rejection</div>
           </header>
 
           {jobs.map((job) => (
