@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { JobEntry } from "../components/JobEntry";
+import { SortUtility } from "../components/SortUtility";
 
 interface JobProps {
   _id: string;
@@ -16,6 +17,7 @@ export const JobList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // fetch jobs
     async function getJobs() {
       const response = await fetch("http://localhost:5050/job/");
       // check for errors
@@ -28,10 +30,9 @@ export const JobList = () => {
       const data = await response.json();
       setJobs(data);
     }
-
+    // call getJobs function
     getJobs();
-    return;
-  }, [jobs.length]);
+  }, [jobs.length]); // if jobs.length changes, refetch data
 
   // delete job
   const deleteJob = async (id: string) => {
@@ -48,25 +49,67 @@ export const JobList = () => {
     }
   };
 
-  // edit job
   const editJob = async (id: string) => {
     navigate(`/job/${id}`);
   };
 
-  // TODO: add sorting by company name, status, etc.
-  const sortDataByStringName = (data: JobProps[], key: "company") => {
-    return data.sort((a, b) => {
-      const textA = a[key].toUpperCase();
-      const textB = b[key].toUpperCase();
-      return textA < textB ? -1 : textA > textB ? 1 : 0;
+  const sortDataByPropertyName = (
+    data: JobProps[],
+    key: keyof JobProps,
+    order: "asc" | "desc" = "asc"
+  ) => {
+    // use ... spread operator to (shallow) copy the data array
+    // this helps ensure React recognizes the state change
+    // and triggers a re-render
+    const sortedData = [...data].sort((a, b) => {
+      // set valueA and valueB to the values of the key property
+      let valueA = a[key];
+      let valueB = b[key];
+
+      // normalize string values for case insensitive comparison
+      if (typeof valueA === "string" && typeof valueB === "string") {
+        valueA = valueA.toLowerCase();
+        valueB = valueB.toLowerCase();
+      }
+
+      // determine sort order
+      let comparison = 0;
+      if (valueA < valueB) {
+        comparison = -1;
+      } else if (valueA > valueB) {
+        comparison = 1;
+      }
+
+      // reverse the comparison result if order is descending
+      return order === "desc" ? comparison * -1 : comparison;
     });
+    return sortedData;
   };
+
+  const handleSort = (sortKey: string, sortOrder: string) => {
+    const sortedData = sortDataByPropertyName(
+      jobs,
+      sortKey as keyof JobProps,
+      sortOrder as "asc" | "desc"
+    );
+    setJobs(sortedData);
+    console.log("SORTED JOBS", jobs);
+  };
+
+  const sortOptions = [
+    { value: "company", label: "Company" },
+    { value: "position", label: "Position" },
+    { value: "firstRound", label: "1st Round" },
+    { value: "secondRound", label: "2nd Round" },
+    { value: "rejection", label: "Rejection" },
+  ];
 
   // TODO: add pagination
 
   return (
     <>
       <div className="w-full mx-auto flex justify-center">
+        <SortUtility sortOptions={sortOptions} handleSort={handleSort} />
         <div className="w-[800px]">
           <header className="grid grid-cols-7 font-bold text-sm">
             <div className="pl-2">Company</div>
