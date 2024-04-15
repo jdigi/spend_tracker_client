@@ -60,3 +60,6 @@
 .job-status.checked .checkbox {
   background: lightgreen;
 }
+.job-status.checked .checkbox.rejection {
+  background: lightcoral;
+}

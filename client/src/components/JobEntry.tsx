@@ -1,4 +1,5 @@
 interface Job {
+  date: string;
   _id: string;
   company: string;
   position: string;
@@ -14,8 +15,11 @@ interface JobProps {
 }
 
 export const JobEntry = ({ job, deleteJob, editJob }: JobProps) => (
-  <div className="job border border-black grid grid-cols-7 mb-2">
-    <div className="self-center place-content-center p-2 border-r h-full text-sm">
+  <div className="job border border-black grid grid-cols-10 mb-2">
+    <div className="self-center place-content-center p-2 border-r h-full col-span-2 text-sm">
+      {job.date}
+    </div>
+    <div className="self-center place-content-center p-2 border-r h-full col-span-2 text-sm">
       {job.company}
     </div>
     <div className="self-center place-content-center p-2 border-r h-full col-span-2 text-sm">
@@ -40,7 +44,7 @@ export const JobEntry = ({ job, deleteJob, editJob }: JobProps) => (
         job.rejection ? "checked" : ""
       } items-center p-2 h-full`}
     >
-      <div className="checkbox"></div>
+      <div className="checkbox rejection"></div>
     </div>
     <div className="flex flex-col">
       <button

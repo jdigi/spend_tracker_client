@@ -4,6 +4,7 @@ import { JobEntry } from "../components/JobEntry";
 import { SortUtility } from "../components/SortUtility";
 
 interface JobProps {
+  date: string;
   _id: string;
   company: string;
   position: string;
@@ -28,7 +29,9 @@ export const JobList = () => {
       }
       // set jobs state with data from response via await
       const data = await response.json();
-      setJobs(data);
+      // setJobs(data);
+      // sort jobs by date in ascending order by default
+      setJobs(sortDataByPropertyName(data, "date", "asc"));
     }
     // call getJobs function
     getJobs();
@@ -93,10 +96,10 @@ export const JobList = () => {
       sortOrder as "asc" | "desc"
     );
     setJobs(sortedData);
-    console.log("SORTED JOBS", jobs);
   };
 
   const sortOptions = [
+    { value: "date", label: "Date" },
     { value: "company", label: "Company" },
     { value: "position", label: "Position" },
     { value: "firstRound", label: "1st Round" },
@@ -111,11 +114,12 @@ export const JobList = () => {
       <div className="w-full mx-auto flex justify-center">
         <SortUtility sortOptions={sortOptions} handleSort={handleSort} />
         <div className="w-[800px]">
-          <header className="grid grid-cols-7 font-bold text-sm">
-            <div className="pl-2">Company</div>
+          <header className="grid grid-cols-10 font-bold text-sm">
+            <div className="pl-2 col-span-2">Date</div>
+            <div className="col-span-2 pl-2">Company</div>
             <div className="col-span-2 pl-2">Position</div>
-            <div className="text-center">1st Round</div>
-            <div className="text-center">2nd Round</div>
+            <div className="text-center">Round 1</div>
+            <div className="text-center">Round 2</div>
             <div className="text-center">Rejection</div>
           </header>
 

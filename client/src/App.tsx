@@ -20,8 +20,8 @@ function App() {
         </a>
       </div> */}
       <BrowserRouter>
-        <nav>
-          <ul>
+        <nav className="max-w-4xl mx-auto mt-2 mb-4">
+          <ul className="flex w-96">
             <li>
               <Link to="/">Todo List</Link>
             </li>
