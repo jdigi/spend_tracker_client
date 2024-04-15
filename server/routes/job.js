@@ -37,6 +37,7 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     let newDocument = {
+      date: req.body.date,
       company: req.body.company,
       position: req.body.position,
       firstRound: req.body.firstRound,
@@ -58,6 +59,7 @@ router.patch("/:id", async (req, res) => {
     const query = { _id: new ObjectId(req.params.id) };
     const updates = {
       $set: {
+        date: req.body.date,
         name: req.body.name,
         position: req.body.position,
         firstRound: req.body.firstRound,
