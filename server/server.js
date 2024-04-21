@@ -2,8 +2,8 @@
 import express from "express";
 import cors from "cors";
 // import the routes
-import records from "./routes/record.js";
-import jobs from "./routes/job.js";
+import transactions from "./routes/transaction.js";
+import accounts from "./routes/account.js";
 
 // set port via environment variable or default to 5050
 const PORT = process.env.PORT || 5050;
@@ -18,9 +18,9 @@ app.use(cors());
 app.use(express.json());
 
 // use the records route
-app.use("/record", records);
+app.use("/transaction", transactions);
 // use the jobs route
-app.use("/job", jobs);
+app.use("/account", accounts);
 
 // listen on the port
 app.listen(PORT, () => {

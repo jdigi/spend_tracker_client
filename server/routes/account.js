@@ -1,4 +1,4 @@
-// API endpoints for record
+// API endpoint for account
 
 // import express
 import express from "express";
@@ -18,14 +18,14 @@ const router = express.Router();
 
 // This section will help you get a list of all the records.
 router.get("/", async (req, res) => {
-  let collection = await db.collection("jobs");
+  let collection = await db.collection("accounts");
   let results = await collection.find({}).toArray();
   res.send(results).status(200);
 });
 
 // This section will help you get a single record by id
 router.get("/:id", async (req, res) => {
-  let collection = await db.collection("jobs");
+  let collection = await db.collection("accounts");
   let query = { _id: new ObjectId(req.params.id) };
   let result = await collection.findOne(query);
 
@@ -38,18 +38,18 @@ router.post("/", async (req, res) => {
   try {
     let newDocument = {
       date: req.body.date,
-      company: req.body.company,
-      position: req.body.position,
-      firstRound: req.body.firstRound,
-      secondRound: req.body.secondRound,
-      rejection: req.body.rejection,
+      account_name: req.body.account_name,
+      account_type: req.body.account_type,
+      balance: req.body.balance,
+      iso_currency_code: req.body.iso_currency_code,
+      logo_url: req.body.logo_url,
     };
-    let collection = await db.collection("jobs");
+    let collection = await db.collection("accounts");
     let result = await collection.insertOne(newDocument);
     res.send(result).status(204);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error adding record");
+    res.status(500).send("Error adding account");
   }
 });
 
@@ -60,20 +60,20 @@ router.patch("/:id", async (req, res) => {
     const updates = {
       $set: {
         date: req.body.date,
-        name: req.body.name,
-        position: req.body.position,
-        firstRound: req.body.firstRound,
-        secondRound: req.body.secondRound,
-        rejection: req.body.rejection,
+        account_name: req.body.account_name,
+        account_type: req.body.account_type,
+        balance: req.body.balance,
+        iso_currency_code: req.body.iso_currency_code,
+        logo_url: req.body.logo_url,
       },
     };
 
-    let collection = await db.collection("jobs");
+    let collection = await db.collection("accounts");
     let result = await collection.updateOne(query, updates);
     res.send(result).status(200);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error updating record");
+    res.status(500).send("Error updating account");
   }
 });
 
@@ -82,13 +82,13 @@ router.delete("/:id", async (req, res) => {
   try {
     const query = { _id: new ObjectId(req.params.id) };
 
-    const collection = db.collection("jobs");
+    const collection = db.collection("accounts");
     let result = await collection.deleteOne(query);
 
     res.send(result).status(200);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error deleting record");
+    res.status(500).send("Error deleting account");
   }
 });
 

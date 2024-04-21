@@ -18,14 +18,14 @@ const router = express.Router();
 
 // This section will help you get a list of all the records.
 router.get("/", async (req, res) => {
-  let collection = await db.collection("records");
+  let collection = await db.collection("transactions");
   let results = await collection.find({}).toArray();
   res.send(results).status(200);
 });
 
 // This section will help you get a single record by id
 router.get("/:id", async (req, res) => {
-  let collection = await db.collection("records");
+  let collection = await db.collection("transactions");
   let query = { _id: new ObjectId(req.params.id) };
   let result = await collection.findOne(query);
 
@@ -37,11 +37,16 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     let newDocument = {
-      company: req.body.company,
-      position: req.body.position,
-      level: req.body.level,
+      account_id: req.body.account_id,
+      amount: req.body.amount,
+      iso_currency_code: req.body.iso_currency_code,
+      date: req.body.date,
+      merchant_name: req.body.merchant_name,
+      category: req.body.category,
+      category_id: req.body.category_id,
+      category_icon_url: req.body.category_icon_url,
     };
-    let collection = await db.collection("records");
+    let collection = await db.collection("transactions");
     let result = await collection.insertOne(newDocument);
     res.send(result).status(204);
   } catch (err) {
@@ -56,18 +61,23 @@ router.patch("/:id", async (req, res) => {
     const query = { _id: new ObjectId(req.params.id) };
     const updates = {
       $set: {
-        name: req.body.name,
-        position: req.body.position,
-        level: req.body.level,
+        account_id: req.body.account_id,
+        amount: req.body.amount,
+        iso_currency_code: req.body.iso_currency_code,
+        date: req.body.date,
+        merchant_name: req.body.merchant_name,
+        category: req.body.category,
+        category_id: req.body.category_id,
+        category_icon_url: req.body.category_icon_url,
       },
     };
 
-    let collection = await db.collection("records");
+    let collection = await db.collection("transactions");
     let result = await collection.updateOne(query, updates);
     res.send(result).status(200);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error updating record");
+    res.status(500).send("Error updating transaction");
   }
 });
 
@@ -76,13 +86,13 @@ router.delete("/:id", async (req, res) => {
   try {
     const query = { _id: new ObjectId(req.params.id) };
 
-    const collection = db.collection("records");
+    const collection = db.collection("transactions");
     let result = await collection.deleteOne(query);
 
     res.send(result).status(200);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error deleting record");
+    res.status(500).send("Error deleting transaction");
   }
 });
 
