@@ -1,11 +1,11 @@
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { TodoList } from "./components/TodoList";
 import { Record } from "./components/TempSubmit";
 import { RecordList } from "./components/Record";
 import { JobEntry } from "./pages/Job";
 import { JobList } from "./pages/JobList";
+import { AccountEntry } from "./pages/Account";
+import { TransactionEntry } from "./pages/Transaction";
 import "./App.css";
 
 function App() {
@@ -37,6 +37,12 @@ function App() {
             <li>
               <Link to="/job/list">Job List</Link>
             </li>
+            <li>
+              <Link to="/account">Account</Link>
+            </li>
+            <li>
+              <Link to="/transaction">Transaction</Link>
+            </li>
           </ul>
         </nav>
         <Routes>
@@ -46,6 +52,10 @@ function App() {
           <Route path="/job" element={<JobEntry />} />
           <Route path="/job/list" element={<JobList />} />
           <Route path="/job/:id" element={<JobEntry />} />
+          <Route path="/account" element={<AccountEntry />} />
+          <Route path="/account/:id" element={<AccountEntry />} />
+          <Route path="/transaction" element={<TransactionEntry />} />
+          <Route path="/transaction/:id" element={<TransactionEntry />} />
         </Routes>
       </BrowserRouter>
     </>
