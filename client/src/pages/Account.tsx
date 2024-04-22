@@ -113,7 +113,7 @@ export const AccountEntry = () => {
   // return the entire form
   return (
     <>
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto w-full">
         <h3>Create/Update Record</h3>
         <form
           onSubmit={onSubmit}

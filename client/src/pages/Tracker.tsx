@@ -2,14 +2,14 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 
-export const JobEntry = () => {
+export const Tracker = () => {
   const [formData, setFormData] = useState({
-    date: new Date().toISOString().split("T")[0],
-    company: "",
-    position: "",
-    firstRound: false,
-    secondRound: false,
-    rejection: false,
+    name: "",
+    category: "",
+    limit: 0,
+    spent: 0,
+    iso_currency_code: "USD",
+    category_icon: "",
   });
   const [isNew, setIsNew] = useState(true); // check if the record is new or existing
   const navigate = useNavigate(); // navigate to different routes
@@ -18,14 +18,16 @@ export const JobEntry = () => {
   useEffect(() => {
     async function fetchData() {
       // fetch new data if the record is not new (has params.id in the URL)
-      const jobId = routeParams.id?.toString() || undefined;
+      const trackerId = routeParams.id?.toString() || undefined;
       // if No ID, then it's a new record => return/escape
-      if (!jobId) return;
+      if (!trackerId) return;
       // otherwise, set isNew to false and fetch the record data
       setIsNew(false);
-      console.log("updating record with ID:", jobId);
+      console.log("updating record with ID:", trackerId);
       // fetch record data
-      const response = await fetch(`http://localhost:5050/job/${jobId}`);
+      const response = await fetch(
+        `http://localhost:5050/tracker/${trackerId}`
+      );
       // check for errors
       if (!response.ok) {
         const message = `An error has occured: ${response.status}`;
@@ -36,7 +38,7 @@ export const JobEntry = () => {
       const data = await response.json();
       // if no data, return
       if (!data) {
-        console.warn(`No data found for record with ID: ${jobId}`);
+        console.warn(`No data found for record with ID: ${trackerId}`);
         return;
       }
       // set form data with the record data
@@ -65,27 +67,30 @@ export const JobEntry = () => {
   // method to submit the form data
   async function onSubmit(e: any) {
     e.preventDefault();
-    const job = { ...formData }; // person object from form data
+    const transaction = { ...formData }; // person object from form data
     try {
       let response;
       if (isNew) {
         // if adding a new record, use POST method to /record
-        response = await fetch("http://localhost:5050/job/", {
+        response = await fetch("http://localhost:5050/tracker/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(job),
+          body: JSON.stringify(transaction),
         });
       } else {
         // if updating an existing record, use PATCH method to /record/:id
-        response = await fetch(`http://localhost:5050/job/${routeParams.id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(job),
-        });
+        response = await fetch(
+          `http://localhost:5050/tracker/${routeParams.id}`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(transaction),
+          }
+        );
       }
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -94,21 +99,21 @@ export const JobEntry = () => {
       console.error(`A problem occurred with your fetch operation:`, error);
     } finally {
       setFormData({
-        date: new Date().toISOString().split("T")[0],
-        company: "",
-        position: "",
-        firstRound: false,
-        secondRound: false,
-        rejection: false,
+        name: "",
+        category: "",
+        limit: 0,
+        spent: 0,
+        iso_currency_code: "USD",
+        category_icon: "",
       }); // reset form
-      navigate("/job/list"); // navigate to record list
+      // navigate("/job/list"); // navigate to record list
     }
   }
 
   // return the entire form
   return (
     <>
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto w-full">
         <h3>Create/Update Record</h3>
         <form
           onSubmit={onSubmit}
@@ -117,54 +122,27 @@ export const JobEntry = () => {
           <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-slate-900/10 pb-12">
             <div>
               <h2 className="text-base font-semibold leading-7 text-slate-900">
-                Job Info
+                Transaction Details
               </h2>
-              <p className="mt-1 text-sm leading-6 text-slate-600">
-                This information will be displayed publicly so be careful what
-                you share.
-              </p>
             </div>
 
             <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 ">
               <div className="sm:col-span-4">
                 <label
-                  htmlFor="date"
+                  htmlFor="name"
                   className="block text-sm font-medium leading-6 text-slate-900"
                 >
-                  Date
-                </label>
-                <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                    <input
-                      type="date"
-                      name="date"
-                      id="date"
-                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
-                      placeholder="Software Engineer"
-                      value={formData.date}
-                      onChange={updateForm}
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="sm:col-span-4">
-                <label
-                  htmlFor="company"
-                  className="block text-sm font-medium leading-6 text-slate-900"
-                >
-                  Company Name
+                  Tracker Name
                 </label>
                 <div className="mt-2">
                   <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                     <input
                       type="text"
-                      name="company"
-                      id="company"
+                      name="name"
+                      id="name"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
-                      placeholder="FAANG Inc."
-                      value={formData.company}
+                      placeholder="Empower Checking"
+                      value={formData.name}
                       onChange={updateForm}
                       required
                     />
@@ -173,78 +151,110 @@ export const JobEntry = () => {
               </div>
               <div className="sm:col-span-4">
                 <label
-                  htmlFor="position"
+                  htmlFor="category"
                   className="block text-sm font-medium leading-6 text-slate-900"
                 >
-                  Position
+                  Category
                 </label>
                 <div className="mt-2">
                   <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                     <input
                       type="text"
-                      name="position"
-                      id="position"
+                      name="category"
+                      id="category"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
-                      placeholder="Software Engineer"
-                      value={formData.position}
+                      placeholder="100"
+                      value={formData.category}
                       onChange={updateForm}
                       required
                     />
                   </div>
                 </div>
               </div>
-              <div>
-                <fieldset className="mt-4">
-                  <legend className="block text-sm font-medium leading-6 text-slate-900 mb-2">
-                    Application Status
-                  </legend>
-                  <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-                    <div className="flex items-center">
-                      <input
-                        id="firstRound"
-                        name="firstRound"
-                        type="checkbox"
-                        checked={formData.firstRound}
-                        onChange={updateForm}
-                        className="h-4 w-4 border-slate-300 text-slate-600 focus:ring-slate-600 cursor-pointer"
-                      />
-                      <label
-                        htmlFor="firstRound"
-                        className="ml-3 block text-sm font-medium leading-6 text-slate-900 mr-4"
-                      >
-                        First Round
-                      </label>
-                      <input
-                        id="secondRound"
-                        name="secondRound"
-                        type="checkbox"
-                        checked={formData.secondRound}
-                        onChange={updateForm}
-                        className="h-4 w-4 border-slate-300 text-slate-600 focus:ring-slate-600 cursor-pointer"
-                      />
-                      <label
-                        htmlFor="secondRound"
-                        className="ml-3 block text-sm font-medium leading-6 text-slate-900 mr-4"
-                      >
-                        Second Round
-                      </label>
-                      <input
-                        id="rejection"
-                        name="rejection"
-                        type="checkbox"
-                        checked={formData.rejection}
-                        onChange={updateForm}
-                        className="h-4 w-4 border-slate-300 text-slate-600 focus:ring-slate-600 cursor-pointer"
-                      />
-                      <label
-                        htmlFor="rejection"
-                        className="ml-3 block text-sm font-medium leading-6 text-slate-900 mr-4"
-                      >
-                        Rejection
-                      </label>
-                    </div>
+              <div className="sm:col-span-4">
+                <label
+                  htmlFor="limit"
+                  className="block text-sm font-medium leading-6 text-slate-900"
+                >
+                  Spend Limit
+                </label>
+                <div className="mt-2">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                    <input
+                      type="text"
+                      name="limit"
+                      id="limit"
+                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      placeholder="USD"
+                      value={formData.limit}
+                      onChange={updateForm}
+                      required
+                    />
                   </div>
-                </fieldset>
+                </div>
+              </div>
+              <div className="sm:col-span-4">
+                <label
+                  htmlFor="spent"
+                  className="block text-sm font-medium leading-6 text-slate-900"
+                >
+                  Spent
+                </label>
+                <div className="mt-2">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                    <input
+                      type="text"
+                      name="spent"
+                      id="spent"
+                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      placeholder="USD"
+                      value={formData.spent}
+                      onChange={updateForm}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="sm:col-span-4">
+                <label
+                  htmlFor="iso_currency_code"
+                  className="block text-sm font-medium leading-6 text-slate-900"
+                >
+                  Currency Code
+                </label>
+                <div className="mt-2">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                    <input
+                      type="text"
+                      name="iso_currency_code"
+                      id="iso_currency_code"
+                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      placeholder="Groceries"
+                      value={formData.iso_currency_code}
+                      onChange={updateForm}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="sm:col-span-4">
+                <label
+                  htmlFor="category_icon"
+                  className="block text-sm font-medium leading-6 text-slate-900"
+                >
+                  Category Icon
+                </label>
+                <div className="mt-2">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                    <input
+                      type="text"
+                      name="category_icon"
+                      id="category_icon"
+                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      placeholder="USD"
+                      value={formData.category_icon}
+                      onChange={updateForm}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>

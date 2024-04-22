@@ -1,26 +1,25 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { JobEntry } from "../components/JobEntry";
+import { TransactionEntry } from "../components/TransactionEntry";
 import { SortUtility } from "../components/SortUtility";
 
-interface JobProps {
+interface TransactionProps {
   date: string;
   _id: string;
-  company: string;
-  position: string;
-  firstRound: boolean;
-  secondRound: boolean;
-  rejection: boolean;
+  merchant_name: string;
+  category: string;
+  category_icon_url: string;
+  amount: number;
 }
 
-export const JobList = () => {
-  const [jobs, setJobs] = useState([] as JobProps[]);
+export const TransactionList = () => {
+  const [transactions, setTransactions] = useState([] as TransactionProps[]);
   const navigate = useNavigate();
 
   useEffect(() => {
     // fetch jobs
-    async function getJobs() {
-      const response = await fetch("http://localhost:5050/job/");
+    async function getTransactions() {
+      const response = await fetch("http://localhost:5050/transaction/");
       // check for errors
       if (!response.ok) {
         const message = `An error has occured: ${response.status}`;
@@ -31,34 +30,15 @@ export const JobList = () => {
       const data = await response.json();
       // setJobs(data);
       // sort jobs by date in ascending order by default
-      setJobs(sortDataByPropertyName(data, "date", "asc"));
+      setTransactions(sortDataByPropertyName(data, "date", "asc"));
     }
-    // call getJobs function
-    getJobs();
-  }, [jobs.length]); // if jobs.length changes, refetch data
-
-  // delete job
-  const deleteJob = async (id: string) => {
-    try {
-      const response = await fetch(`http://localhost:5050/job/${id}`, {
-        method: "DELETE",
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      setJobs(jobs.filter((job) => job._id !== id));
-    } catch (error) {
-      console.error(`A problem occurred with your fetch operation:`, error);
-    }
-  };
-
-  const editJob = async (id: string) => {
-    navigate(`/job/${id}`);
-  };
+    // call getTransactions function
+    getTransactions();
+  }, [transactions.length]); // if jobs.length changes, refetch data
 
   const sortDataByPropertyName = (
-    data: JobProps[],
-    key: keyof JobProps,
+    data: TransactionProps[],
+    key: keyof TransactionProps,
     order: "asc" | "desc" = "asc"
   ) => {
     // use ... spread operator to (shallow) copy the data array
@@ -91,20 +71,18 @@ export const JobList = () => {
 
   const handleSort = (sortKey: string, sortOrder: string) => {
     const sortedData = sortDataByPropertyName(
-      jobs,
-      sortKey as keyof JobProps,
+      transactions,
+      sortKey as keyof TransactionProps,
       sortOrder as "asc" | "desc"
     );
-    setJobs(sortedData);
+    setTransactions(sortedData);
   };
 
   const sortOptions = [
     { value: "date", label: "Date" },
-    { value: "company", label: "Company" },
-    { value: "position", label: "Position" },
-    { value: "firstRound", label: "1st Round" },
-    { value: "secondRound", label: "2nd Round" },
-    { value: "rejection", label: "Rejection" },
+    { value: "merchant_name", label: "Merchant" },
+    { value: "amount", label: "Amount" },
+    { value: "category", label: "Category" },
   ];
 
   // TODO: add pagination
@@ -114,22 +92,16 @@ export const JobList = () => {
       <div className="w-full mx-auto flex justify-center">
         <SortUtility sortOptions={sortOptions} handleSort={handleSort} />
         <div className="w-[800px]">
-          <header className="grid grid-cols-10 font-bold text-sm">
+          <header className="grid grid-cols-9 font-bold text-sm">
             <div className="pl-2 col-span-2">Date</div>
-            <div className="col-span-2 pl-2">Company</div>
-            <div className="col-span-2 pl-2">Position</div>
-            <div className="text-center">Round 1</div>
-            <div className="text-center">Round 2</div>
-            <div className="text-center">Rejection</div>
+            <div className="col-span-2 pl-2">Merchant</div>
+            <div className="col-span-2 pl-2">Category</div>
+            <div className="text-center">Amount</div>
+            <div className="text-center">Logo</div>
           </header>
 
-          {jobs.map((job) => (
-            <JobEntry
-              key={job._id}
-              job={job}
-              deleteJob={deleteJob}
-              editJob={editJob}
-            />
+          {transactions.map((transaction) => (
+            <TransactionEntry key={transaction._id} transaction={transaction} />
           ))}
         </div>
       </div>
