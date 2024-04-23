@@ -8,6 +8,8 @@ import { AccountEntry } from "./pages/Account";
 import { TransactionEntryForm } from "./pages/Transaction";
 import { TransactionList } from "./pages/TransactionList";
 import { Tracker } from "./pages/Tracker";
+import { AccountOverview } from "./pages/AccountOverview";
+import { TransactionOverview } from "./pages/TransactionOverview";
 import "./App.css";
 
 function App() {
@@ -17,13 +19,7 @@ function App() {
         <nav className="max-w-4xl w-full mx-auto mt-2 mb-4">
           <ul className="flex gap-x-4 space-between w-full">
             <li>
-              <Link to="/">Todo List</Link>
-            </li>
-            <li>
-              <Link to="/record">Record</Link>
-            </li>
-            <li>
-              <Link to="/record/list">Record List</Link>
+              <Link to="/">Dashboard</Link>
             </li>
             <li>
               <Link to="/account">Account</Link>
@@ -36,6 +32,12 @@ function App() {
             </li>
             <li>
               <Link to="/tracker">Tracker</Link>
+            </li>
+            <li>
+              <Link to="/account/overview">Account Overview</Link>
+            </li>
+            <li>
+              <Link to="/transaction/overview">Transaction Overview</Link>
             </li>
           </ul>
         </nav>
@@ -50,6 +52,11 @@ function App() {
           <Route path="/transaction/list" element={<TransactionList />} />
           <Route path="/tracker" element={<Tracker />} />
           <Route path="/tracker/:id" element={<Tracker />} />
+          <Route path="/account/overview" element={<AccountOverview />} />
+          <Route
+            path="/transaction/overview"
+            element={<TransactionOverview />}
+          />
         </Routes>
       </BrowserRouter>
     </>
