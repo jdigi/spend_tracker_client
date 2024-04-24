@@ -1,28 +1,19 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
-type Account = {
-  _id: string;
-  account_name: string;
-  account_type: string;
-  balance: number;
-  logo_url: string;
-};
-
-export const useAccountData = () => {
-  const [accountData, setAccountData] = useState<Account[]>([]);
+export const useAccountDetails = () => {
+  const [accountDetails, setAccountDetails] = useState<{ [key: string]: any }>(
+    {}
+  );
   const [isLoading, setIsLoading] = useState(false);
   const routeParams = useParams();
 
   useEffect(() => {
-    const getAccountData = async () => {
+    const getAccountDetails = async () => {
       setIsLoading(true);
 
       const accountId = routeParams.id?.toString() || undefined;
-      let url = `http://localhost:5050/account/`;
-      if (accountId) {
-        url += accountId;
-      }
+      let url = `http://localhost:5050/account/${accountId}`;
 
       try {
         const response = await fetch(url);
@@ -37,14 +28,14 @@ export const useAccountData = () => {
           console.warn(`No data found in response.`);
           return;
         }
-        setAccountData(data);
+        setAccountDetails(data);
       } catch (error: any) {
         console.error(error.message);
       } finally {
         setIsLoading(false);
       }
     };
-    getAccountData();
-  }, [accountData.length, routeParams.id]);
-  return { accountData, isLoading };
+    getAccountDetails();
+  }, [routeParams.id]);
+  return { accountDetails, isLoading };
 };

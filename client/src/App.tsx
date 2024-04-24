@@ -9,8 +9,10 @@ import { TransactionEntryForm } from "./pages/Transaction";
 import { TransactionList } from "./pages/TransactionList";
 import { Tracker } from "./pages/Tracker";
 import { AccountOverview } from "./pages/AccountOverview";
+import { AccountDetail } from "./components/AccountOverview";
 import { TransactionOverview } from "./pages/TransactionOverview";
 import "./App.css";
+import { AccountList } from "./components/AccountList";
 
 function App() {
   return (
@@ -46,7 +48,8 @@ function App() {
           <Route path="/record" element={<Record />} />
           <Route path="/record/list" element={<RecordList />} />
           <Route path="/account" element={<AccountEntry />} />
-          <Route path="/account/:id" element={<AccountEntry />} />
+          {/* <Route path="/account/:id" element={<AccountEntry />} /> */}
+          <Route path="/account/:id" element={<AccountDetail />} />
           <Route path="/transaction" element={<TransactionEntryForm />} />
           <Route path="/transaction/:id" element={<TransactionEntryForm />} />
           <Route path="/transaction/list" element={<TransactionList />} />

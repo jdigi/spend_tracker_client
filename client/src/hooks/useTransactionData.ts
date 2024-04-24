@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 
-// ! would use accountId: string to fetch transactions for a specific account
+// ! real world: use accountId to fetch transactions for a specific account
 export const useTransactionData = () => {
   const [transactionData, setTransactionData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // fetch transaction data
     const getTransactionData = async () => {
+      setIsLoading(true);
       // TODO: update API to connect accountId to transactions
-      // ! would use accountId to fetch transactions for a specific account
+      // ! real world: use accountId to fetch transactions for a specific account
       // const response = await fetch(`http://localhost:5050/transaction/${accountId}`);
 
       const response = await fetch(`http://localhost:5050/transaction/`);
@@ -23,10 +25,11 @@ export const useTransactionData = () => {
         return;
       }
       setTransactionData(data);
+      setIsLoading(false);
     };
     getTransactionData();
   }, [transactionData.length]);
 
   // return transaction data
-  return transactionData;
+  return { transactionData, isLoading };
 };
