@@ -1,4 +1,5 @@
 import { useTransactionData } from "../hooks/useTransactionData";
+import { IconComponent } from "../util/IconComponent";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
@@ -40,6 +41,7 @@ export const TransactionList = () => {
       amount,
       date,
       merchant_name,
+      category,
       category_icon_url = "https://jasondigiacobbe.com/logo-react.png",
     } = transaction;
 
@@ -49,12 +51,16 @@ export const TransactionList = () => {
         className="grid grid-cols-[20%_minmax(20%,_1fr)_20%] gap-y-1"
       >
         <div className="col-span-1 col-start-1 col-end-2 row-span-2 self-center justify-self-center">
-          {isLoading ? <Skeleton width={50} height={50} /> : null}
-          <img
+          {isLoading ? (
+            <Skeleton width={50} height={50} />
+          ) : (
+            <IconComponent category={category} />
+          )}
+          {/* <img
             src={category_icon_url}
             alt={transaction.category}
             style={{ display: isLoading ? "none" : undefined }}
-          />
+          /> */}
         </div>
         <div className="col-span-1 col-start-2 col-end-3 row-start-1 row-end-2 row-span-1">
           {isLoading ? <Skeleton width={100} height={20} /> : merchant_name}

@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router";
 import { useAccountData } from "../hooks/useAccountData";
+import { IconComponent } from "../util/IconComponent";
+import { AddCircle } from "@mui/icons-material";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
@@ -32,28 +34,19 @@ export const AccountList = () => {
   };
 
   const accountRow = (account: Account) => {
-    const {
-      _id,
-      account_name,
-      account_type,
-      balance,
-      logo_url = "https://jasondigiacobbe.com/logo-react.png",
-    } = account;
+    const { _id, account_name, account_type, balance } = account;
 
     return (
       <div
         key={_id}
-        className="grid grid-cols-[20%_minmax(20%,_1fr)_20%] gap-y-1 cursor-pointer hover:bg-gray-100 p-2"
+        className="grid grid-cols-[20%_minmax(20%,_1fr)_20%] gap-y-1 cursor-pointer hover:bg-[#CBE0D950] p-2"
         onClick={handlePageChange.bind(null, _id)}
       >
         <div className="col-span-1 col-start-1 col-end-2 row-span-2 self-center justify-self-center">
-          {isLoading ? <Skeleton width={50} height={50} /> : null}
-          {logo_url && (
-            <img
-              src={logo_url}
-              alt={account_name}
-              style={{ display: isLoading ? "none" : undefined }}
-            />
+          {isLoading ? (
+            <Skeleton width={50} height={50} />
+          ) : (
+            <IconComponent category={account_type} />
           )}
         </div>
         <div className="col-span-1 col-start-2 col-end-3 row-start-1 row-end-2 row-span-1">
@@ -74,10 +67,20 @@ export const AccountList = () => {
   };
 
   return (
-    <div className="w-[640px] mx-auto">
-      {accountData.map((account: Account) => accountRow(account))}
-      <div className="w-full mt-4 flex itemc-center justify-center">
-        <button onClick={handleAccountCreateRoute}>Create New Account</button>
+    <div className="w-full mx-auto">
+      <div className="border border-black rounded-lg overflow-hidden">
+        {accountData.map((account: Account) => accountRow(account))}
+      </div>
+      <div className="w-full mt-8 flex itemc-center justify-center">
+        <AddCircle
+          sx={{
+            fontSize: 64,
+            color: "#CBE0D9",
+            fill: "black !important",
+            cursor: "pointer",
+          }}
+          onClick={handleAccountCreateRoute}
+        />
       </div>
     </div>
   );

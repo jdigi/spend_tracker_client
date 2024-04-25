@@ -78,3 +78,8 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+/* temp overrides for testing */
+svg {
+  max-width: 100%;
+  fill: black !important;
+}

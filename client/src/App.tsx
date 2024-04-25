@@ -5,7 +5,6 @@ import { TransactionEntryForm } from "./pages/Transaction";
 import { TransactionList } from "./pages/TransactionList";
 import { Tracker } from "./pages/Tracker";
 import { TrackerOverview } from "./components/TrackerOverview";
-import { AccountOverview } from "./pages/AccountOverview";
 import { AccountList } from "./components/AccountList";
 import { AccountDetail } from "./components/AccountOverview";
 import { TransactionOverview } from "./pages/TransactionOverview";
@@ -60,6 +59,14 @@ function App() {
           />
         </Routes>
       </BrowserRouter>
+      <footer className="w-full h-[250px] bg-black mt-auto">
+        <div className="max-w-screen-xl w-full px-4 py-8 mx-auto">
+          <img
+            src="https://empower.me/static/icon-empower-trademark.f9c0947b.svg"
+            alt="Empower Logo"
+          />
+        </div>
+      </footer>
     </>
   );
 }

@@ -1,5 +1,7 @@
 import { useTrackerData } from "../hooks/useTrackerData";
 import { useNavigate } from "react-router";
+import { IconComponent } from "../util/IconComponent";
+import { AddCircle } from "@mui/icons-material";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
@@ -34,28 +36,20 @@ export const TrackerList = () => {
 
   const trackerRow = (tracker: TrackerProps) => {
     // destructuring tracker object && setting default values
-    const {
-      _id,
-      name,
-      category,
-      limit,
-      spent,
-      category_icon = "https://jasondigiacobbe.com/logo-react.png",
-    } = tracker;
+    const { _id, name, category, limit, spent } = tracker;
 
     return (
       <div
         key={_id}
-        className="grid grid-cols-[20%_minmax(20%,_1fr)_20%] gap-y-1 cursor-pointer hover:bg-gray-100 p-2"
+        className="grid grid-cols-[20%_minmax(20%,_1fr)_20%] gap-y-1 cursor-pointer hover:bg-[#CBE0D950] p-2"
         onClick={handleTrackerDetailRoute.bind(null, _id)}
       >
         <div className="col-span-1 col-start-1 col-end-2 row-span-2 self-center justify-self-center">
-          {isLoading ? <Skeleton width={50} height={50} /> : null}
-          <img
-            src={category}
-            alt={tracker.category}
-            style={{ display: isLoading ? "none" : undefined }}
-          />
+          {isLoading ? (
+            <Skeleton width={50} height={50} />
+          ) : (
+            <IconComponent category={category} />
+          )}
         </div>
         <div className="col-span-1 col-start-2 col-end-3 row-start-1 row-end-2 row-span-1">
           {isLoading ? <Skeleton width={100} height={20} /> : name}
@@ -79,10 +73,20 @@ export const TrackerList = () => {
   };
 
   return (
-    <div className="w-[640px] mx-auto">
-      {trackerData.map((tracker: TrackerProps) => trackerRow(tracker))}
-      <div className="w-full mt-4 flex itemc-center justify-center">
-        <button onClick={handleTrackerCreateRoute}>Create New Tracker</button>
+    <div className="w-full mx-auto">
+      <div className="border border-black rounded-lg overflow-hidden">
+        {trackerData.map((tracker: TrackerProps) => trackerRow(tracker))}
+      </div>
+      <div className="w-full mt-8 flex itemc-center justify-center">
+        <AddCircle
+          sx={{
+            fontSize: 64,
+            color: "#CBE0D9",
+            fill: "black !important",
+            cursor: "pointer",
+          }}
+          onClick={handleTrackerCreateRoute}
+        />
       </div>
     </div>
   );
