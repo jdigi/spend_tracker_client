@@ -23,7 +23,6 @@ export const Tracker = () => {
       if (!trackerId) return;
       // otherwise, set isNew to false and fetch the record data
       setIsNew(false);
-      console.log("updating record with ID:", trackerId);
       // fetch record data
       const response = await fetch(
         `http://localhost:5050/tracker/${trackerId}`
@@ -106,7 +105,7 @@ export const Tracker = () => {
         iso_currency_code: "USD",
         category_icon: "",
       }); // reset form
-      // navigate("/job/list"); // navigate to record list
+      navigate("/"); // navigate to the home page
     }
   }
 
@@ -260,7 +259,7 @@ export const Tracker = () => {
           </div>
           <input
             type="submit"
-            value="Save Job Record"
+            value="Save Tracker"
             className="inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 hover:text-accent-foreground h-9 rounded-md px-3 cursor-pointer mt-4"
           />
         </form>

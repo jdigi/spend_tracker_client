@@ -1,7 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router";
 import { AccountList } from "../components/AccountList";
-import { TransactionList } from "../components/TransactionList";
+import { TrackerList } from "../components/TrackerList";
 
 export const Dashboard = () => {
   return (
@@ -18,7 +16,7 @@ export const Dashboard = () => {
         <div className="col-span-1">
           <h2>Accounts</h2>
           <hr />
-          <TransactionList />
+          <TrackerList />
         </div>
       </section>
     </main>

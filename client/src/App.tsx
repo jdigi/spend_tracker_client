@@ -1,18 +1,15 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { TodoList } from "./components/TodoList";
-import { Record } from "./components/TempSubmit";
-import { RecordList } from "./components/Record";
-
 import { Dashboard } from "./pages/Dashboard";
 import { AccountEntry } from "./pages/Account";
 import { TransactionEntryForm } from "./pages/Transaction";
 import { TransactionList } from "./pages/TransactionList";
 import { Tracker } from "./pages/Tracker";
+import { TrackerOverview } from "./components/TrackerOverview";
 import { AccountOverview } from "./pages/AccountOverview";
+import { AccountList } from "./components/AccountList";
 import { AccountDetail } from "./components/AccountOverview";
 import { TransactionOverview } from "./pages/TransactionOverview";
 import "./App.css";
-import { AccountList } from "./components/AccountList";
 
 function App() {
   return (
@@ -24,38 +21,39 @@ function App() {
               <Link to="/">Dashboard</Link>
             </li>
             <li>
-              <Link to="/account">Account</Link>
+              <Link to="/account">Create Account</Link>
             </li>
             <li>
-              <Link to="/transaction">Transaction</Link>
+              <Link to="/tracker/create">Create Tracker</Link>
+            </li>
+            <li>
+              <Link to="/transaction">Create Transaction</Link>
             </li>
             <li>
               <Link to="/transaction/list">Transaction List</Link>
             </li>
             <li>
-              <Link to="/tracker">Tracker</Link>
+              <Link to="/accounts/list">Accounts List</Link>
             </li>
             <li>
-              <Link to="/account/overview">Account Overview</Link>
-            </li>
-            <li>
-              <Link to="/transaction/overview">Transaction Overview</Link>
+              <Link to="/trackers/list">Trackers List</Link>
             </li>
           </ul>
         </nav>
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/record" element={<Record />} />
-          <Route path="/record/list" element={<RecordList />} />
           <Route path="/account" element={<AccountEntry />} />
-          {/* <Route path="/account/:id" element={<AccountEntry />} /> */}
+          <Route path="/account/create" element={<AccountEntry />} />
+          <Route path="/accounts/list" element={<AccountList />} />
           <Route path="/account/:id" element={<AccountDetail />} />
+          <Route path="/account/edit/:id" element={<AccountEntry />} />
           <Route path="/transaction" element={<TransactionEntryForm />} />
           <Route path="/transaction/:id" element={<TransactionEntryForm />} />
           <Route path="/transaction/list" element={<TransactionList />} />
-          <Route path="/tracker" element={<Tracker />} />
-          <Route path="/tracker/:id" element={<Tracker />} />
-          <Route path="/account/overview" element={<AccountOverview />} />
+          <Route path="/tracker/create" element={<Tracker />} />
+          <Route path="/trackers/list" element={<TrackerOverview />} />
+          <Route path="/tracker/:id" element={<TrackerOverview />} />
+          <Route path="/tracker/edit/:id" element={<Tracker />} />
           <Route
             path="/transaction/overview"
             element={<TransactionOverview />}

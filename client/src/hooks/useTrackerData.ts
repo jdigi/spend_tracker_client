@@ -1,28 +1,29 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
-type Account = {
+type Tracker = {
   _id: string;
-  account_name: string;
-  account_type: string;
-  balance: number;
-  logo_url: string;
+  name: string;
+  category: string;
+  limit: number;
+  spent: number;
+  category_icon: string;
 };
 
-export const useAccountData = () => {
-  const [accountData, setAccountData] = useState<Account[]>([]);
+export const useTrackerData = () => {
+  const [trackerData, setTrackerData] = useState<Tracker[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const routeParams = useParams();
 
   useEffect(() => {
-    const getAccountData = async () => {
+    const getTrackerData = async () => {
       setIsLoading(true);
 
-      // optional accountId to fetch specific account
-      const accountId = routeParams.id?.toString() || undefined;
-      let url = `http://localhost:5050/account/`;
-      if (accountId) {
-        url += accountId;
+      // optional trackerId to fetch specific tracker
+      const trackerId = routeParams.id?.toString() || undefined;
+      let url = `http://localhost:5050/tracker/`;
+      if (trackerId) {
+        url += trackerId;
       }
 
       try {
@@ -38,14 +39,14 @@ export const useAccountData = () => {
           console.warn(`No data found in response.`);
           return;
         }
-        setAccountData(data);
+        setTrackerData(data);
       } catch (error: any) {
         console.error(error.message);
       } finally {
         setIsLoading(false);
       }
     };
-    getAccountData();
-  }, [accountData.length, routeParams.id]);
-  return { accountData, isLoading };
+    getTrackerData();
+  }, [trackerData.length, routeParams.id]);
+  return { trackerData, isLoading };
 };

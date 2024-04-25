@@ -25,7 +25,6 @@ export const TransactionEntryForm = () => {
       if (!transactionId) return;
       // otherwise, set isNew to false and fetch the record data
       setIsNew(false);
-      console.log("updating record with ID:", transactionId);
       // fetch record data
       const response = await fetch(
         `http://localhost:5050/transaction/${transactionId}`

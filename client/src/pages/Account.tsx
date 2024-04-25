@@ -23,7 +23,6 @@ export const AccountEntry = () => {
       if (!accountId) return;
       // otherwise, set isNew to false and fetch the record data
       setIsNew(false);
-      console.log("updating record with ID:", accountId);
       // fetch record data
       const response = await fetch(
         `http://localhost:5050/account/${accountId}`
