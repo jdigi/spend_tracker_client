@@ -12,6 +12,8 @@ interface TransactionProps {
   amount: number;
 }
 
+// ! This component is not complete. Use for sorting reference only.
+
 export const TransactionList = () => {
   const [transactions, setTransactions] = useState([] as TransactionProps[]);
   const navigate = useNavigate();

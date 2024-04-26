@@ -1,10 +1,20 @@
+import { Suspense } from "react";
+import { motion } from "framer-motion";
 import { AccountList } from "../components/AccountList";
 import { TrackerList } from "../components/TrackerList";
 import { AccountBalance, MonetizationOn } from "@mui/icons-material";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export const Dashboard = () => {
   return (
-    <main className="max-w-screen-xl w-full p-4 mx-auto h-full">
+    <motion.main
+      className="max-w-screen-xl w-full p-4 mx-auto h-full"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <header className="w-full py-4 border-b border-t border-slate-300 flex items-center">
         <img
           src="https://empower.me/static/icon-empower-trademark.f9c0947b.svg"
@@ -18,7 +28,9 @@ export const Dashboard = () => {
           <section className="col-span-1 flex flex-col">
             <header className="w-full flex flex-col justify-center items-center py-8 gap-y-4">
               <div className="rounded-full bg-[#FCD0BA] w-24 h-24 p-3 flex items-center justify-center">
-                <AccountBalance sx={{ fontSize: 72 }} />
+                <Suspense fallback={<Skeleton width={50} height={50} circle />}>
+                  <AccountBalance sx={{ fontSize: 72 }} />
+                </Suspense>
               </div>
               <h2 className="text-2xl font-bold">Accounts</h2>
             </header>
@@ -27,7 +39,9 @@ export const Dashboard = () => {
           <section className="col-span-1 flex-flex-col">
             <header className="w-full flex flex-col justify-center items-center py-8 gap-y-4">
               <div className="rounded-full bg-[#FCD0BA] w-24 h-24 p-3 flex items-center justify-center">
-                <MonetizationOn sx={{ fontSize: 72 }} />
+                <Suspense fallback={<Skeleton width={50} height={50} circle />}>
+                  <MonetizationOn sx={{ fontSize: 72 }} />
+                </Suspense>
               </div>
               <h2 className="text-2xl font-bold">Trackers</h2>
             </header>
@@ -35,6 +49,6 @@ export const Dashboard = () => {
           </section>
         </div>
       </div>
-    </main>
+    </motion.main>
   );
 };

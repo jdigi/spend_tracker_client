@@ -1,4 +1,4 @@
-// component to create a new record or update an existing record
+// Component to create a new record or update an existing
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 
@@ -12,8 +12,8 @@ export const Tracker = () => {
     category_icon: "",
   });
   const [isNew, setIsNew] = useState(true); // check if the record is new or existing
-  const navigate = useNavigate(); // navigate to different routes
-  const routeParams = useParams(); // get URL parameters
+  const navigate = useNavigate();
+  const routeParams = useParams();
 
   useEffect(() => {
     async function fetchData() {
@@ -46,7 +46,6 @@ export const Tracker = () => {
     fetchData();
   }, [routeParams.id, navigate]); // if the id or navigate changes, refetch data
 
-  // method to update the form data
   const updateForm = (event: any) => {
     // destructure event.target
     const { name, type, checked, value } = event.target;
@@ -63,10 +62,9 @@ export const Tracker = () => {
     }));
   };
 
-  // method to submit the form data
   async function onSubmit(e: any) {
     e.preventDefault();
-    const transaction = { ...formData }; // person object from form data
+    const transaction = { ...formData };
     try {
       let response;
       if (isNew) {
@@ -105,28 +103,27 @@ export const Tracker = () => {
         iso_currency_code: "USD",
         category_icon: "",
       }); // reset form
-      navigate("/"); // navigate to the home page
+      navigate(`/tracker/${routeParams.id}`); // navigate to the home page
     }
   }
 
-  // return the entire form
   return (
     <>
-      <div className="max-w-2xl mx-auto w-full">
-        <h3>Create/Update Record</h3>
+      <div className="max-w-xl mx-auto w-full py-8">
+        <h2 className="text-lg font-semibold mb-4">Create/Update Tracker</h2>
         <form
           onSubmit={onSubmit}
           className="border rounded-lg overflow-hidden p-4"
         >
-          <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-slate-900/10 pb-12">
+          <div className="w-full border-b border-slate-900/10 pb-12">
             <div>
-              <h2 className="text-base font-semibold leading-7 text-slate-900">
-                Transaction Details
+              <h2 className="text-base font-semibold leading-7 text-slate-900 mb-4">
+                Tracker Details
               </h2>
             </div>
 
-            <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 ">
-              <div className="sm:col-span-4">
+            <div className="max-w-2xl w-full flex flex-col gap-y-4">
+              <div>
                 <label
                   htmlFor="name"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -134,7 +131,7 @@ export const Tracker = () => {
                   Tracker Name
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="text"
                       name="name"
@@ -148,7 +145,7 @@ export const Tracker = () => {
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="category"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -156,7 +153,7 @@ export const Tracker = () => {
                   Category
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="text"
                       name="category"
@@ -170,7 +167,7 @@ export const Tracker = () => {
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="limit"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -178,7 +175,7 @@ export const Tracker = () => {
                   Spend Limit
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="text"
                       name="limit"
@@ -192,7 +189,7 @@ export const Tracker = () => {
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="spent"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -200,7 +197,7 @@ export const Tracker = () => {
                   Spent
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="text"
                       name="spent"
@@ -213,7 +210,7 @@ export const Tracker = () => {
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="iso_currency_code"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -221,7 +218,7 @@ export const Tracker = () => {
                   Currency Code
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="text"
                       name="iso_currency_code"
@@ -234,7 +231,7 @@ export const Tracker = () => {
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="category_icon"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -242,7 +239,7 @@ export const Tracker = () => {
                   Category Icon
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="text"
                       name="category_icon"

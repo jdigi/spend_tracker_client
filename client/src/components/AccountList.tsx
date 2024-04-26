@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 import { useAccountData } from "../hooks/useAccountData";
 import { IconComponent } from "../util/IconComponent";
@@ -39,23 +40,25 @@ export const AccountList = () => {
     return (
       <div
         key={_id}
-        className="grid grid-cols-[20%_minmax(20%,_1fr)_20%] gap-y-1 cursor-pointer hover:bg-[#CBE0D950] p-2"
+        className="grid grid-cols-[20%_minmax(20%,_1fr)_20%] gap-y-1 cursor-pointer hover:bg-[#CBE0D950] p-2 py-4 min-h-[70px]"
         onClick={handlePageChange.bind(null, _id)}
       >
         <div className="col-span-1 col-start-1 col-end-2 row-span-2 self-center justify-self-center">
           {isLoading ? (
             <Skeleton width={50} height={50} />
           ) : (
-            <IconComponent category={account_type} />
+            <div className="flex items-center justify-center p-2 rounded-full border-2 border-black">
+              <IconComponent category={account_type} />
+            </div>
           )}
         </div>
-        <div className="col-span-1 col-start-2 col-end-3 row-start-1 row-end-2 row-span-1">
+        <div className="col-span-1 col-start-2 col-end-3 row-start-1 row-end-2 row-span-1 text-base font-bold">
           {isLoading ? <Skeleton width={100} height={20} /> : account_name}
         </div>
-        <div className="col-span-1 col-start-2 col-end-3 row-start-2 row-end-3 row-span-1">
+        <div className="col-span-1 col-start-2 col-end-3 row-start-2 row-end-3 row-span-1 text-base font-normal text-slate-400">
           {isLoading ? <Skeleton width={100} height={20} /> : account_type}
         </div>
-        <div className="col-span-1 col-start-3 col-end-4 row-span-2 self-center">
+        <div className="col-span-1 col-start-3 col-end-4 row-span-2 self-center text-right text-base font-bold pr-2 ">
           {isLoading ? (
             <Skeleton width={75} height={40} />
           ) : (
@@ -67,21 +70,33 @@ export const AccountList = () => {
   };
 
   return (
-    <div className="w-full mx-auto">
-      <div className="border border-black rounded-lg overflow-hidden">
-        {accountData.map((account: Account) => accountRow(account))}
-      </div>
+    <motion.div
+      className="w-full mx-auto"
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.75 }}
+    >
+      {isLoading ? (
+        <Skeleton count={accountData.length} height={70} />
+      ) : (
+        <div className="border border-black rounded-lg overflow-hidden">
+          {accountData.map((account: Account) => accountRow(account))}
+        </div>
+      )}
       <div className="w-full mt-8 flex itemc-center justify-center">
-        <AddCircle
-          sx={{
-            fontSize: 64,
-            color: "#CBE0D9",
-            fill: "black !important",
-            cursor: "pointer",
-          }}
-          onClick={handleAccountCreateRoute}
-        />
+        <div className="flex items-center justify-center p-0.5 rounded-full border-2 border-transparent hover:border-[#000000] transition">
+          <AddCircle
+            sx={{
+              fontSize: 64,
+              color: "#CBE0D9",
+              fill: "black !important",
+              cursor: "pointer",
+            }}
+            onClick={handleAccountCreateRoute}
+          />
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

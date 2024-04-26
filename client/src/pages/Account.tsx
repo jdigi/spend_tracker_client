@@ -1,4 +1,4 @@
-// component to create a new record or update an existing record
+// Component to create a new record or update an existing
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 
@@ -12,8 +12,8 @@ export const AccountEntry = () => {
     logo_url: "",
   });
   const [isNew, setIsNew] = useState(true); // check if the record is new or existing
-  const navigate = useNavigate(); // navigate to different routes
-  const routeParams = useParams(); // get URL parameters
+  const navigate = useNavigate();
+  const routeParams = useParams();
 
   useEffect(() => {
     async function fetchData() {
@@ -46,7 +46,6 @@ export const AccountEntry = () => {
     fetchData();
   }, [routeParams.id, navigate]); // if the id or navigate changes, refetch data
 
-  // method to update the form data
   const updateForm = (event: any) => {
     // destructure event.target
     const { name, type, checked, value } = event.target;
@@ -63,14 +62,13 @@ export const AccountEntry = () => {
     }));
   };
 
-  // method to submit the form data
   async function onSubmit(e: any) {
     e.preventDefault();
-    const account = { ...formData }; // person object from form data
+    const account = { ...formData };
     try {
       let response;
       if (isNew) {
-        // if adding a new record, use POST method to /record
+        // if adding a new record, use POST method to /account
         response = await fetch("http://localhost:5050/account/", {
           method: "POST",
           headers: {
@@ -79,7 +77,7 @@ export const AccountEntry = () => {
           body: JSON.stringify(account),
         });
       } else {
-        // if updating an existing record, use PATCH method to /record/:id
+        // if updating an existing record, use PATCH method to /account/:id
         response = await fetch(
           `http://localhost:5050/account/${routeParams.id}`,
           {
@@ -105,28 +103,27 @@ export const AccountEntry = () => {
         iso_currency_code: "USD",
         logo_url: "",
       }); // reset form
-      // navigate("/job/list"); // navigate to record list
+      navigate(`/account/${routeParams.id}`); // navigate to account details
     }
   }
 
-  // return the entire form
   return (
     <>
-      <div className="max-w-2xl mx-auto w-full">
-        <h3>Create/Update Record</h3>
+      <div className="max-w-xl mx-auto w-full py-8">
+        <h2 className="text-lg font-semibold mb-4">Create/Update Account</h2>
         <form
           onSubmit={onSubmit}
           className="border rounded-lg overflow-hidden p-4"
         >
-          <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-slate-900/10 pb-12">
+          <div className="w-full border-b border-slate-900/10 pb-12">
             <div>
-              <h2 className="text-base font-semibold leading-7 text-slate-900">
-                Account Info
+              <h2 className="text-base font-semibold leading-7 text-slate-900 mb-4">
+                Account Details
               </h2>
             </div>
 
-            <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 ">
-              <div className="sm:col-span-4">
+            <div className="max-w-2xl w-full flex flex-col gap-y-4">
+              <div>
                 <label
                   htmlFor="date"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -134,7 +131,7 @@ export const AccountEntry = () => {
                   Date
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="date"
                       name="date"
@@ -149,7 +146,7 @@ export const AccountEntry = () => {
                 </div>
               </div>
 
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="account_name"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -157,7 +154,7 @@ export const AccountEntry = () => {
                   Account Name
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="text"
                       name="account_name"
@@ -171,7 +168,7 @@ export const AccountEntry = () => {
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="account_type"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -179,7 +176,7 @@ export const AccountEntry = () => {
                   Account Type
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="text"
                       name="account_type"
@@ -193,7 +190,7 @@ export const AccountEntry = () => {
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="balance"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -201,7 +198,7 @@ export const AccountEntry = () => {
                   Account Balance
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="number"
                       name="balance"
@@ -215,7 +212,7 @@ export const AccountEntry = () => {
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="iso_currency_code"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -223,7 +220,7 @@ export const AccountEntry = () => {
                   Currency Code
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="text"
                       name="iso_currency_code"
@@ -237,7 +234,7 @@ export const AccountEntry = () => {
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="logo_url"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -245,13 +242,13 @@ export const AccountEntry = () => {
                   Logo URL
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="text"
                       name="logo_url"
                       id="logo_url"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
-                      placeholder="USD"
+                      placeholder="https://account-logo.com/logo.png"
                       value={formData.logo_url}
                       onChange={updateForm}
                     />
@@ -262,7 +259,7 @@ export const AccountEntry = () => {
           </div>
           <input
             type="submit"
-            value="Save Job Record"
+            value="Save Changes"
             className="inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 hover:text-accent-foreground h-9 rounded-md px-3 cursor-pointer mt-4"
           />
         </form>

@@ -1,4 +1,4 @@
-// component to create a new record or update an existing record
+// Component to create a new record or update an existing
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 
@@ -13,9 +13,9 @@ export const TransactionEntryForm = () => {
     category_id: "",
     category_icon_url: "",
   });
-  const [isNew, setIsNew] = useState(true); // check if the record is new or existing
-  const navigate = useNavigate(); // navigate to different routes
-  const routeParams = useParams(); // get URL parameters
+  const [isNew, setIsNew] = useState(true);
+  const navigate = useNavigate();
+  const routeParams = useParams();
 
   useEffect(() => {
     async function fetchData() {
@@ -65,10 +65,9 @@ export const TransactionEntryForm = () => {
     }));
   };
 
-  // method to submit the form data
   async function onSubmit(e: any) {
     e.preventDefault();
-    const transaction = { ...formData }; // person object from form data
+    const transaction = { ...formData };
     try {
       let response;
       if (isNew) {
@@ -109,28 +108,27 @@ export const TransactionEntryForm = () => {
         category_id: "",
         category_icon_url: "",
       }); // reset form
-      // navigate("/job/list"); // navigate to record list
+      navigate("/");
     }
   }
 
-  // return the entire form
   return (
     <>
-      <div className="max-w-2xl mx-auto w-full">
-        <h3>Create/Update Record</h3>
+      <div className="max-w-xl mx-auto w-full py-8">
+        <h2 className="text-lg font-semibold mb-4">Create Transaction</h2>
         <form
           onSubmit={onSubmit}
           className="border rounded-lg overflow-hidden p-4"
         >
-          <div className="grid grid-cols-1 gap-x-8 gap-y-10 border-b border-slate-900/10 pb-12">
+          <div className="w-full border-b border-slate-900/10 pb-12">
             <div>
-              <h2 className="text-base font-semibold leading-7 text-slate-900">
+              <h2 className="text-base font-semibold leading-7 text-slate-900 mb-4">
                 Transaction Details
               </h2>
             </div>
 
-            <div className="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 ">
-              <div className="sm:col-span-4">
+            <div className="max-w-2xl w-full flex flex-col gap-y-4">
+              <div>
                 <label
                   htmlFor="date"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -138,7 +136,7 @@ export const TransactionEntryForm = () => {
                   Date
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="date"
                       name="date"
@@ -153,7 +151,7 @@ export const TransactionEntryForm = () => {
                 </div>
               </div>
 
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="account_id"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -161,7 +159,7 @@ export const TransactionEntryForm = () => {
                   Account ID
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="text"
                       name="account_id"
@@ -175,7 +173,7 @@ export const TransactionEntryForm = () => {
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="amount"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -183,7 +181,7 @@ export const TransactionEntryForm = () => {
                   Amount
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="number"
                       name="amount"
@@ -197,7 +195,7 @@ export const TransactionEntryForm = () => {
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="iso_currency_code"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -205,7 +203,7 @@ export const TransactionEntryForm = () => {
                   Currency Code
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="text"
                       name="iso_currency_code"
@@ -219,7 +217,7 @@ export const TransactionEntryForm = () => {
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="merchant_name"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -227,20 +225,20 @@ export const TransactionEntryForm = () => {
                   Merchant Name
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="text"
                       name="merchant_name"
                       id="merchant_name"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
-                      placeholder="USD"
+                      placeholder="Target"
                       value={formData.merchant_name}
                       onChange={updateForm}
                     />
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="category"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -248,7 +246,7 @@ export const TransactionEntryForm = () => {
                   Category Name
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="text"
                       name="category"
@@ -261,7 +259,7 @@ export const TransactionEntryForm = () => {
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="category_id"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -269,7 +267,7 @@ export const TransactionEntryForm = () => {
                   Category ID
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="text"
                       name="category_id"
@@ -282,7 +280,7 @@ export const TransactionEntryForm = () => {
                   </div>
                 </div>
               </div>
-              <div className="sm:col-span-4">
+              <div>
                 <label
                   htmlFor="category_icon_url"
                   className="block text-sm font-medium leading-6 text-slate-900"
@@ -290,13 +288,13 @@ export const TransactionEntryForm = () => {
                   Category Icon
                 </label>
                 <div className="mt-2">
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-slate-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input
                       type="text"
                       name="category_icon_url"
                       id="category_icon_url"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-slate-900 placeholder:text-slate-400 focus:ring-0 sm:text-sm sm:leading-6"
-                      placeholder="USD"
+                      placeholder="https://example.com/icon.png"
                       value={formData.category_icon_url}
                       onChange={updateForm}
                     />
@@ -307,7 +305,7 @@ export const TransactionEntryForm = () => {
           </div>
           <input
             type="submit"
-            value="Save Job Record"
+            value="Save Transaction"
             className="inline-flex items-center justify-center whitespace-nowrap text-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-slate-100 hover:text-accent-foreground h-9 rounded-md px-3 cursor-pointer mt-4"
           />
         </form>
