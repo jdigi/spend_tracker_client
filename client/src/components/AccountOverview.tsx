@@ -44,14 +44,14 @@ export const AccountDetail = () => {
           alt="Empower Logo"
           className="invert w-10 h-10 mr-4"
         />
-        <h1 className="text-3xl font-light">Account Details</h1>
+        <h1 className="text-2xl md:text-3xl font-light">Account Details</h1>
       </header>
       <section className="grid grid-cols-5 w-full py-8 border-b border-slate-300">
         <div className="col-span-1 col-start-1 col-end-2 row-span-2 self-center justify-self-center">
           {isLoading ? (
             <Skeleton width={50} height={50} />
           ) : accountDetails.account_type ? (
-            <div className="flex items-center justify-center p-4 rounded-full border-2 border-black">
+            <div className="flex items-center justify-center p-1 md:p-4 rounded-full border-2 border-black w-12 h-12 md:w-auto md:h-auto">
               <IconComponent
                 category={accountDetails.account_type}
                 typeSize={72}
@@ -59,7 +59,7 @@ export const AccountDetail = () => {
             </div>
           ) : null}
         </div>
-        <div className="col-start-2 col-end-5 row-start-1 row-end-2 row-span-1 text-3xl font-semibold self-end">
+        <div className="col-start-2 col-end-5 row-start-1 row-end-2 row-span-1 text-xl md:text-3xl font-semibold self-end">
           {isLoading ? (
             <Skeleton width={100} height={20} />
           ) : (
@@ -73,7 +73,7 @@ export const AccountDetail = () => {
             accountDetails.account_type
           )}
         </div>
-        <div className="col-start-5 col-end-6 row-span-2 self-center text-3xl font-black">
+        <div className="md:col-start-5 col-end-6 md:row-span-2 col-start-2 self-center text-xl md:text-3xl font-black">
           {isLoading ? (
             <Skeleton width={75} height={40} />
           ) : (

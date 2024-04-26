@@ -43,27 +43,27 @@ export const TrackerOverview = () => {
           alt="Empower Logo"
           className="invert w-10 h-10 mr-4"
         />
-        <h1 className="text-3xl font-light">Tracker Details</h1>
+        <h1 className="text-2xl md:text-3xl font-light">Tracker Details</h1>
       </header>
       <section className="grid grid-cols-5 w-full py-8 border-b border-slate-300">
         <div className="col-span-1 col-start-1 col-end-2 row-span-2 self-center justify-self-center">
           {isLoading ? (
             <Skeleton width={50} height={50} />
           ) : trackerDetails.category ? (
-            <div className="flex items-center justify-center p-4 rounded-full border-2 border-black">
+            <div className="flex items-center justify-center p-1 md:p-4 rounded-full border-2 border-black w-12 h-12 md:w-auto md:h-auto">
               <IconComponent category={trackerDetails.category} typeSize={72} />
             </div>
           ) : null}
         </div>
 
-        <div className="col-start-2 col-end-5 row-start-1 row-end-2 row-span-1 text-3xl font-semibold self-end">
+        <div className="col-start-2 col-end-5 row-start-1 row-end-2 row-span-1 text-xl md:text-3xl font-semibold self-end">
           {isLoading ? (
             <Skeleton width={100} height={20} />
           ) : (
             trackerDetails.name
           )}
         </div>
-        <div className="col-start-2 col-end-5 row-start-2 row-end-3 row-span-1 text-lg font-semibold text-slate-400">
+        <div className="col-start-1 col-end-5 row-start-4 row-end-5 row-span-1 text-lg font-semibold text-slate-400">
           {isLoading ? (
             <Skeleton width={100} height={20} />
           ) : (
@@ -72,21 +72,21 @@ export const TrackerOverview = () => {
             )}%`
           )}
         </div>
-        <div className="col-start-5 col-end-6 row-span-1 row-start-1 row-end-2 self-center text-3xl font-black self-end">
+        <div className="md:col-start-5 col-start-2 col-end-6 row-span-1 row-start-2 row-end-3 md:row-start-1 md:row-end-2 self-center text-xl md:text-3xl font-black self-end">
           {isLoading ? (
             <Skeleton width={75} height={40} />
           ) : (
             formatCurrency(trackerDetails.spent)
           )}
         </div>
-        <div className="col-start-5 col-end-6 row-span-1 row-start-2 row-end-3 self-center text-lg font-semibold text-slate-400">
+        <div className="md:col-start-5 col-end-6 row-span-1 md:row-start-2 md:row-end-3 col-start-2 row-start-3 row-end-4 self-center text-base md:text-lg font-semibold text-slate-400">
           {isLoading ? (
             <Skeleton width={75} height={40} />
           ) : (
             `of ${formatCurrency(trackerDetails.limit)}`
           )}
         </div>
-        <div className="h-5 mt-8 mx-auto col-span-5 rounded-md bg-slate-300 w-11/12 overflow-hidden">
+        <div className="h-5 mt-2 md:mt-8 mx-auto col-span-5 rounded-md bg-slate-300 w-full md:w-11/12 overflow-hidden">
           <div
             className="h-full bg-slate-600"
             style={{
