@@ -7,8 +7,9 @@ Create the file `project/server/config.env` with your Atlas URI and the server p
 ```
 ATLAS_URI=mongodb+srv://<username>:<password>@sandbox.jadwj.mongodb.net/
 PORT=5050
-⚠️ Step not needed for this testing repo. private .env included for testing. Please do not share.
 ```
+
+> :warning: Above step not needed for this testing repo. private .env included for testing. Please do not share.
 
 Start server:
 
