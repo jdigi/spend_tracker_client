@@ -2,17 +2,18 @@
 
 ## How To Run
 
-Create the file `mern/server/config.env` with your Atlas URI and the server port:
+Create the file `project/server/config.env` with your Atlas URI and the server port:
 
 ```
 ATLAS_URI=mongodb+srv://<username>:<password>@sandbox.jadwj.mongodb.net/
 PORT=5050
+⚠️ Step not needed for this testing repo. private .env included for testing. Please do not share.
 ```
 
 Start server:
 
 ```
-cd mern/server
+cd project/server
 npm install
 npm start
 ```
@@ -20,11 +21,7 @@ npm start
 Start Web server
 
 ```
-cd mern/client
+cd project/client
 npm install
 npm run dev
 ```
-
-## Disclaimer
-
-Use at your own risk; not a supported MongoDB product
