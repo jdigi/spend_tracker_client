@@ -1,6 +1,6 @@
-// Component to create a new record or update an existing
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
+import { PageTitle } from "../components/PageTitle";
 
 export const TransactionEntryForm = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +16,8 @@ export const TransactionEntryForm = () => {
   const [isNew, setIsNew] = useState(true);
   const navigate = useNavigate();
   const routeParams = useParams();
+
+  // TODO: use/create custom hook w/ form component to handle form state and fetch data
 
   useEffect(() => {
     async function fetchData() {
@@ -46,19 +48,13 @@ export const TransactionEntryForm = () => {
       setFormData(data);
     }
     fetchData();
-  }, [routeParams.id, navigate]); // if the id or navigate changes, refetch data
+  }, [routeParams.id, navigate]);
 
   // method to update the form data
   const updateForm = (event: any) => {
     // destructure event.target
     const { name, type, checked, value } = event.target;
     // set form data
-    // * copy previous form data via spread operator ...
-    // * update the form data with the new values
-    // * use computed property [name] to dynamically update the form data
-    // * * The key for the data to update is determined dynamically from the name attribute of the input field
-    // * if the type is checkbox, use checked value
-    // * if the type is not checkbox, use value
     setFormData((prevData) => ({
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
@@ -113,9 +109,9 @@ export const TransactionEntryForm = () => {
   }
 
   return (
-    <>
+    <main className="max-w-screen-xl w-full p-4 mx-auto h-full">
+      <PageTitle title="Create Test Transaction" />
       <div className="max-w-xl mx-auto w-full py-8">
-        <h2 className="text-lg font-semibold mb-4">Create Transaction</h2>
         <form
           onSubmit={onSubmit}
           className="border rounded-lg overflow-hidden p-4"
@@ -310,6 +306,6 @@ export const TransactionEntryForm = () => {
           />
         </form>
       </div>
-    </>
+    </main>
   );
 };

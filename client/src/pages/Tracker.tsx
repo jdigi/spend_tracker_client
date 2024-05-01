@@ -1,6 +1,7 @@
-// Component to create a new record or update an existing
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
+import { PageTitle } from "../components/PageTitle";
+import { motion } from "framer-motion";
 
 export const Tracker = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,11 @@ export const Tracker = () => {
   const [isNew, setIsNew] = useState(true); // check if the record is new or existing
   const navigate = useNavigate();
   const routeParams = useParams();
+
+  // TODO: create form component to handle form data
+  // * use component on Account and Tracker create/update pages
+  // TODO: create custom hook to handle form data (useFormData)
+  // * use custom hook on Account and Tracker create/update pages
 
   useEffect(() => {
     async function fetchData() {
@@ -108,9 +114,15 @@ export const Tracker = () => {
   }
 
   return (
-    <>
+    <motion.main
+      className="max-w-screen-xl w-full p-4 mx-auto h-full"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <PageTitle title="Create / Update Tracker" />
       <div className="max-w-xl mx-auto w-full py-8">
-        <h2 className="text-lg font-semibold mb-4">Create/Update Tracker</h2>
         <form
           onSubmit={onSubmit}
           className="border rounded-lg overflow-hidden p-4"
@@ -261,6 +273,6 @@ export const Tracker = () => {
           />
         </form>
       </div>
-    </>
+    </motion.main>
   );
 };

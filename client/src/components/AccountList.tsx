@@ -2,9 +2,9 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 import { useAccountData } from "../hooks/useAccountData";
 import { IconComponent } from "../util/IconComponent";
+import { StringFormatter } from "../util/StringFormatter";
 import { AddCircle } from "@mui/icons-material";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 
 interface Account {
   _id: string;
@@ -15,16 +15,11 @@ interface Account {
 }
 
 export const AccountList = () => {
-  const { accountData, isLoading } = useAccountData();
+  const { data, isLoading, error } = useAccountData<Account[]>(
+    "http://localhost:5050/account/"
+  );
   const navigate = useNavigate();
-
-  // * assuming amount is in USD
-  // TODO: seperate into utility function for reuse + add locale support
-  const currencyFormatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-  const formatCurrency = (amount: number) => currencyFormatter.format(amount);
+  const { formatCurrency } = StringFormatter();
 
   const handlePageChange = (accountId: string) => {
     navigate(`/account/${accountId}`);
@@ -40,8 +35,8 @@ export const AccountList = () => {
     return (
       <div
         key={_id}
-        className="grid grid-cols-[15%_minmax(15%,_1fr)_25%] md:grid-cols-[20%_minmax(20%,_1fr)_20%] gap-y-1 cursor-pointer hover:bg-[#CBE0D950] p-2 py-4 min-h-[70px]"
-        onClick={handlePageChange.bind(null, _id)}
+        className="grid grid-cols-[15%_minmax(15%,_1fr)_25%] md:grid-cols-[20%_minmax(20%,_1fr)_20%] gap-y-1 cursor-pointer hover:bg-[#CBE0D950] rounded-md p-2 py-4 min-h-[70px]"
+        onClick={() => handlePageChange(_id)}
       >
         <div className="col-span-1 col-start-1 col-end-2 row-span-2 self-center justify-self-center">
           {isLoading ? (
@@ -69,6 +64,15 @@ export const AccountList = () => {
     );
   };
 
+  if (error)
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <p className="font-semibold">Error Loading Data:</p>
+        <p className="italic">{error}</p>
+        <p className="mt-2">Please refresh or try again later.</p>
+      </div>
+    );
+
   return (
     <motion.div
       className="w-full mx-auto"
@@ -77,11 +81,11 @@ export const AccountList = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.75 }}
     >
-      {isLoading ? (
-        <Skeleton count={accountData.length} height={70} />
+      {isLoading || !data ? (
+        <Skeleton count={5} height={70} />
       ) : (
-        <div className="border border-black rounded-lg overflow-hidden">
-          {accountData.map((account: Account) => accountRow(account))}
+        <div className="border border-black rounded-lg overflow-hidden p-4">
+          {data.map((account: Account) => accountRow(account))}
         </div>
       )}
       <div className="w-full mt-4 md:mt-8 flex itemc-center justify-center">

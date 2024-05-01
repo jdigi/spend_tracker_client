@@ -5,7 +5,7 @@
 
 @media (min-width: 768px) {
   #root {
-    height: 100%;
+    min-height: 100%;
   }
 }
 

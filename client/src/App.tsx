@@ -6,22 +6,26 @@ import { TransactionEntryForm } from "./pages/Transaction";
 import { Tracker } from "./pages/Tracker";
 import { TrackerOverview } from "./components/TrackerOverview";
 import { AccountDetail } from "./components/AccountOverview";
+import { AccountCircle } from "@mui/icons-material";
+import "react-loading-skeleton/dist/skeleton.css";
 import "./App.css";
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        <nav className="max-w-screen-xl w-full p-4 mx-auto">
-          <ul className="flex gap-x-4 space-between w-full text-slate-500">
-            <li>
-              <Link to="/">Dashboard</Link>
-            </li>
-            <li>
-              <Link to="/transaction">Create Transaction</Link>
-            </li>
-          </ul>
+        <nav className="max-w-screen-xl w-full pt-5 px-4 mx-auto">
+          <div className="flex gap-x-4 justify-between w-full text-slate-500 items-center">
+            <Link
+              to="/"
+              className="font-normal text-black hover:text-slate-400 transition-colors duration-2"
+            >
+              Dashboard
+            </Link>
+            <AccountCircle sx={{ fontSize: 40 }} />
+          </div>
         </nav>
+
         <AnimatePresence mode="wait">
           <Routes>
             <Route path="/" element={<Dashboard />} />
@@ -36,16 +40,21 @@ function App() {
             <Route path="/tracker/edit/:id" element={<Tracker />} />
           </Routes>
         </AnimatePresence>
-      </BrowserRouter>
 
-      <footer className="w-full h-[250px] bg-black mt-auto">
-        <div className="max-w-screen-xl w-full px-4 py-8 mx-auto">
-          <img
-            src="https://empower.me/static/icon-empower-trademark.f9c0947b.svg"
-            alt="Empower Logo"
-          />
-        </div>
-      </footer>
+        <footer className="w-full h-[250px] bg-black mt-auto flex items-center">
+          <div className="max-w-screen-xl w-full px-4 py-8 mx-auto flex justify-between items-center">
+            <Link to="/">
+              <img
+                src="https://empower.me/static/icon-empower-trademark.f9c0947b.svg"
+                alt="Empower Logo"
+              />
+            </Link>
+            <div className="mt-2 text-xs text-slate-400 font-semibold p-2 border border-slate-400 cursor-pointer">
+              <Link to="/transaction">Create Testing Transaction</Link>
+            </div>
+          </div>
+        </footer>
+      </BrowserRouter>
     </>
   );
 }

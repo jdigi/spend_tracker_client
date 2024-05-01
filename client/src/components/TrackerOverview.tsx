@@ -1,33 +1,42 @@
-import { useTrackerDetails } from "../hooks/useTrackerDetails";
-import { useNavigate } from "react-router";
+import { useAccountData } from "../hooks/useAccountData";
+import { useNavigate, useParams } from "react-router";
 import { motion } from "framer-motion";
 import { IconComponent } from "../util/IconComponent";
+import { StringFormatter } from "../util/StringFormatter";
 import { Edit } from "@mui/icons-material";
+import { PageTitle } from "./PageTitle";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
+
+interface TrackerProps {
+  _id: string;
+  name: string;
+  category: string;
+  limit: number;
+  spent: number;
+  category_icon: string;
+}
 
 export const TrackerOverview = () => {
-  const { trackerDetails, isLoading } = useTrackerDetails();
+  const routeParams = useParams();
+  const trackerId = routeParams.id?.toString() || undefined;
+  const { data, isLoading, error } = useAccountData<TrackerProps>(
+    `http://localhost:5050/tracker/${trackerId}`
+  );
   const navigate = useNavigate();
+  const { formatCurrency } = StringFormatter();
 
   const handleEditPageRoute = (trackerId: string) => {
     navigate(`/tracker/edit/${trackerId}`);
   };
 
-  // * assuming amount is in USD
-  const currencyFormatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-  const formatCurrency = (amount: number) => currencyFormatter.format(amount);
-
-  if (!trackerDetails) {
+  if (error)
     return (
-      <div className="max-w-screen-xl w-full p-4 mx-auto h-full">
-        No Tracker data available.
+      <div className="flex flex-col items-center justify-center">
+        <p className="font-semibold">Error Loading Data:</p>
+        <p className="italic">{error}</p>
+        <p className="mt-2">Please refresh or try again later.</p>
       </div>
     );
-  }
 
   return (
     <motion.main
@@ -37,71 +46,68 @@ export const TrackerOverview = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <header className="w-full py-4 border-b border-t border-slate-300 flex items-center">
-        <img
-          src="https://empower.me/static/icon-empower-trademark.f9c0947b.svg"
-          alt="Empower Logo"
-          className="invert w-10 h-10 mr-4"
-        />
-        <h1 className="text-2xl md:text-3xl font-light">Tracker Details</h1>
-      </header>
+      <PageTitle title="Tracker Details" />
       <section className="grid grid-cols-5 w-full py-8 border-b border-slate-300">
         <div className="col-span-1 col-start-1 col-end-2 row-span-2 self-center justify-self-center">
-          {isLoading ? (
+          {isLoading || !data ? (
             <Skeleton width={50} height={50} />
-          ) : trackerDetails.category ? (
+          ) : data.category ? (
             <div className="flex items-center justify-center p-1 md:p-4 rounded-full border-2 border-black w-12 h-12 md:w-auto md:h-auto">
-              <IconComponent category={trackerDetails.category} typeSize={72} />
+              <IconComponent category={data.category} typeSize={72} />
             </div>
           ) : null}
         </div>
 
         <div className="col-start-2 col-end-5 row-start-1 row-end-2 row-span-1 text-xl md:text-3xl font-semibold self-end">
-          {isLoading ? (
+          {isLoading || !data ? (
             <Skeleton width={100} height={20} />
           ) : (
-            trackerDetails.name
+            data.name
           )}
         </div>
         <div className="col-start-1 col-end-5 row-start-4 row-end-5 row-span-1 text-lg font-semibold text-slate-400">
-          {isLoading ? (
+          {isLoading || !data ? (
             <Skeleton width={100} height={20} />
           ) : (
-            `${Math.round(
-              (trackerDetails.spent / trackerDetails.limit) * 100
-            )}%`
+            `${Math.round((data.spent / data.limit) * 100)}%`
           )}
         </div>
         <div className="md:col-start-5 col-start-2 col-end-6 row-span-1 row-start-2 row-end-3 md:row-start-1 md:row-end-2 self-center text-xl md:text-3xl font-black self-end">
-          {isLoading ? (
+          {isLoading || !data ? (
             <Skeleton width={75} height={40} />
           ) : (
-            formatCurrency(trackerDetails.spent)
+            formatCurrency(data.spent)
           )}
         </div>
         <div className="md:col-start-5 col-end-6 row-span-1 md:row-start-2 md:row-end-3 col-start-2 row-start-3 row-end-4 self-center text-base md:text-lg font-semibold text-slate-400">
-          {isLoading ? (
+          {isLoading || !data ? (
             <Skeleton width={75} height={40} />
           ) : (
-            `of ${formatCurrency(trackerDetails.limit)}`
+            `of ${formatCurrency(data.limit)}`
           )}
         </div>
         <div className="h-5 mt-2 md:mt-8 mx-auto col-span-5 rounded-md bg-slate-300 w-full md:w-11/12 overflow-hidden">
-          <div
-            className="h-full bg-slate-600"
-            style={{
-              width: `${(trackerDetails.spent / trackerDetails.limit) * 100}%`,
-            }}
-          ></div>
+          {isLoading || !data ? (
+            <Skeleton width="100%" height={40} />
+          ) : (
+            <div
+              className="h-full bg-slate-600"
+              style={{
+                width: `${(data.spent / data.limit) * 100}%`,
+              }}
+            ></div>
+          )}
         </div>
       </section>
-      <div
-        onClick={handleEditPageRoute.bind(null, trackerDetails._id)}
-        className="p-2 gap-2 cursor-pointer text-slate-400 hover:text-slate-600 rounded-md border border-black inline-block mt-4"
-      >
-        <Edit sx={{ fontSize: 20, marginRight: "8px" }} />
-        Edit Tracker
-      </div>
+      {data && (
+        <div
+          onClick={() => handleEditPageRoute(data._id)}
+          className="p-2 gap-2 cursor-pointer text-slate-400 hover:text-slate-600 rounded-md border border-black inline-block mt-4"
+        >
+          <Edit sx={{ fontSize: 20, marginRight: "8px" }} />
+          Edit Tracker
+        </div>
+      )}
     </motion.main>
   );
 };

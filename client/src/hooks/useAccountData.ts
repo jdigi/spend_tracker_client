@@ -1,51 +1,39 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
 
-type Account = {
-  _id: string;
-  account_name: string;
-  account_type: string;
-  balance: number;
-  logo_url: string;
-};
+interface DataResponse<T> {
+  data: T | null; // generic type T or null
+  isLoading: boolean;
+  error: string | null;
+}
 
-export const useAccountData = () => {
-  const [accountData, setAccountData] = useState<Account[]>([]);
+export const useAccountData = <T>(url: string): DataResponse<T> => {
+  const [data, setData] = useState<T | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const routeParams = useParams();
+  const [error, setError] = useState<string | null>(null);
+
+  const getAccountData = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`An error has occured: ${response.status}`);
+      }
+      const result = await response.json();
+      if (!result) {
+        console.warn(`No data found in response.`);
+      }
+      setData(result);
+    } catch (error: any) {
+      console.error(error.message);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const getAccountData = async () => {
-      setIsLoading(true);
-
-      // optional accountId to fetch specific account
-      const accountId = routeParams.id?.toString() || undefined;
-      let url = `http://localhost:5050/account/`;
-      if (accountId) {
-        url += accountId;
-      }
-
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          const message = `An error has occured: ${response.status}`;
-          console.error(message);
-          return;
-        }
-        const data = await response.json();
-        // if no data, return
-        if (!data) {
-          console.warn(`No data found in response.`);
-          return;
-        }
-        setAccountData(data);
-      } catch (error: any) {
-        console.error(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     getAccountData();
-  }, [accountData.length, routeParams.id]);
-  return { accountData, isLoading };
+  }, [url]);
+  return { data, isLoading, error };
 };

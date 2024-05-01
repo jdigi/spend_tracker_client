@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { AccountList } from "../components/AccountList";
 import { TrackerList } from "../components/TrackerList";
 import { AccountBalance, MonetizationOn } from "@mui/icons-material";
+import { PageTitle } from "../components/PageTitle";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 
 export const Dashboard = () => {
   return (
@@ -15,14 +15,7 @@ export const Dashboard = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <header className="w-full py-4 border-b border-t border-slate-300 flex items-center">
-        <img
-          src="https://empower.me/static/icon-empower-trademark.f9c0947b.svg"
-          alt="Empower Logo"
-          className="invert w-10 h-10 mr-4"
-        />
-        <h1 className="text-2xl md:text-3xl font-light">Dashboard</h1>
-      </header>
+      <PageTitle title="Dashboard" />
       <div className="flex flex-col items-center justify-center min-h-[80%]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 w-full">
           <section className="col-span-1 flex flex-col border-b-8 border-slate-300 md:border-transparent pb-4 md:pb-0">
@@ -32,7 +25,9 @@ export const Dashboard = () => {
                   <AccountBalance sx={{ fontSize: 72 }} />
                 </Suspense>
               </div>
-              <h2 className="text-lg md:text-2xl font-bold">Accounts</h2>
+              <h2 className="text-lg md:text-2xl font-bold font-serif">
+                Accounts
+              </h2>
             </header>
             <AccountList />
           </section>
@@ -43,7 +38,9 @@ export const Dashboard = () => {
                   <MonetizationOn sx={{ fontSize: 72 }} />
                 </Suspense>
               </div>
-              <h2 className="text-lg md:text-2xl font-bold">Trackers</h2>
+              <h2 className="text-lg md:text-2xl font-bold font-serif">
+                Trackers
+              </h2>
             </header>
             <TrackerList />
           </section>

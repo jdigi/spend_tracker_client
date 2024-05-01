@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
-import { useTrackerData } from "../hooks/useTrackerData";
+import { useAccountData } from "../hooks/useAccountData";
 import { useNavigate } from "react-router";
 import { IconComponent } from "../util/IconComponent";
+import { StringFormatter } from "../util/StringFormatter";
 import { AddCircle } from "@mui/icons-material";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 
 interface TrackerProps {
   _id: string;
@@ -16,8 +16,11 @@ interface TrackerProps {
 }
 
 export const TrackerList = () => {
-  const { trackerData, isLoading } = useTrackerData();
+  const { data, isLoading, error } = useAccountData<TrackerProps[]>(
+    "http://localhost:5050/tracker/"
+  );
   const navigate = useNavigate();
+  const { formatCurrency } = StringFormatter();
 
   const handleTrackerDetailRoute = (trackerId: string) => {
     navigate(`/tracker/${trackerId}`);
@@ -27,14 +30,6 @@ export const TrackerList = () => {
     navigate(`/tracker/create`);
   };
 
-  // * assuming amount is in USD
-  // TODO: seperate into utility function for reuse + add locale support
-  const currencyFormatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-  const formatCurrency = (amount: number) => currencyFormatter.format(amount);
-
   const trackerRow = (tracker: TrackerProps) => {
     // destructuring tracker object
     const { _id, name, category, limit, spent } = tracker;
@@ -42,8 +37,8 @@ export const TrackerList = () => {
     return (
       <div
         key={_id}
-        className="grid  grid-cols-[15%_minmax(15%,_1fr)_25%] md:grid-cols-[20%_minmax(20%,_1fr)_20%] gap-y-0 cursor-pointer hover:bg-[#CBE0D950] px-2 py-3.5 min-h-[70px]"
-        onClick={handleTrackerDetailRoute.bind(null, _id)}
+        className="grid grid-cols-[15%_minmax(15%,_1fr)_25%] md:grid-cols-[20%_minmax(20%,_1fr)_20%] gap-y-0 cursor-pointer rounded-md hover:bg-[#CBE0D950] px-2 py-3.5 min-h-[70px]"
+        onClick={() => handleTrackerDetailRoute(_id)}
       >
         <div className="col-span-1 col-start-1 col-end-2 row-span-2 self-center justify-self-center">
           {isLoading ? (
@@ -83,6 +78,15 @@ export const TrackerList = () => {
     );
   };
 
+  if (error)
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <p className="font-semibold">Error Loading Data:</p>
+        <p className="italic">{error}</p>
+        <p className="mt-2">Please refresh or try again later.</p>
+      </div>
+    );
+
   return (
     <motion.div
       className="w-full mx-auto"
@@ -91,11 +95,11 @@ export const TrackerList = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.75 }}
     >
-      {isLoading ? (
-        <Skeleton count={trackerData.length} height={70} />
+      {isLoading || !data ? (
+        <Skeleton count={data ? data.length : 5} height={70} />
       ) : (
-        <div className="border border-black rounded-lg overflow-hidden">
-          {trackerData.map((tracker: TrackerProps) => trackerRow(tracker))}
+        <div className="border border-black rounded-lg overflow-hidden p-4">
+          {data.map((tracker: TrackerProps) => trackerRow(tracker))}
         </div>
       )}
       <div className="w-full mt-8 flex itemc-center justify-center">

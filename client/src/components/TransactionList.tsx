@@ -1,9 +1,9 @@
-import { useTransactionData } from "../hooks/useTransactionData";
+import { useAccountData } from "../hooks/useAccountData";
 import { IconComponent } from "../util/IconComponent";
+import { StringFormatter } from "../util/StringFormatter";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
 
-interface Transaction {
+interface TransactionProps {
   account_id: string;
   amount: number;
   date: string;
@@ -13,30 +13,17 @@ interface Transaction {
 }
 
 export const TransactionList = () => {
-  const { transactionData, isLoading } = useTransactionData();
+  const { data, isLoading, error } = useAccountData<TransactionProps[]>(
+    "http://localhost:5050/transaction/"
+  );
+  // TODO: update API to connect accountId to transactions
+  // * real world: use accountId to fetch transactions for a specific account
 
-  // * assuming amount is in USD
-  // TODO: seperate into utility function for reuse + add locale support
-  const currencyFormatter = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  });
-  const formatCurrency = (amount: number) => currencyFormatter.format(amount);
-
-  // simple date formatting
-  // TODO: seperate into utility function for reuse
-  const formatDate = (date: string) => {
-    const dateObj = new Date(date);
-    const options: Intl.DateTimeFormatOptions = {
-      month: "long",
-      day: "numeric",
-    };
-    return new Intl.DateTimeFormat("en-US", options).format(dateObj);
-  };
+  const { formatDate, formatCurrency } = StringFormatter();
 
   // TODO: implement sorting utility
 
-  const transactionRow = (transaction: Transaction) => {
+  const transactionRow = (transaction: TransactionProps) => {
     // destructuring transaction object
     const { account_id, amount, date, merchant_name, category } = transaction;
 
@@ -69,11 +56,26 @@ export const TransactionList = () => {
     );
   };
 
+  if (error)
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <p className="font-semibold">Error Loading Data:</p>
+        <p className="italic">{error}</p>
+        <p className="mt-2">Please refresh or try again later.</p>
+      </div>
+    );
+
   return (
-    <div className="w-full mx-auto ">
-      {transactionData.map((transaction: Transaction) =>
-        transactionRow(transaction)
+    <>
+      {isLoading || !data ? (
+        <Skeleton count={5} height={70} />
+      ) : (
+        <div className="w-full mx-auto ">
+          {data.map((transaction: TransactionProps) =>
+            transactionRow(transaction)
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 };
