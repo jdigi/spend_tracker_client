@@ -14,7 +14,7 @@ interface TransactionProps {
 
 export const TransactionList = () => {
   const { data, isLoading, error } = useAccountData<TransactionProps[]>(
-    "http://localhost:5050/transaction/"
+    "https://spend-tracker-backend.vercel.app/transaction/"
   );
   // TODO: update API to connect accountId to transactions
   // * real world: use accountId to fetch transactions for a specific account

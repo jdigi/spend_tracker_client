@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import { motion } from "framer-motion";
 import { IconComponent } from "../util/IconComponent";
 import { StringFormatter } from "../util/StringFormatter";
-import { Edit } from "@mui/icons-material";
+import { Edit, DeleteForever } from "@mui/icons-material";
 import { PageTitle } from "./PageTitle";
 import Skeleton from "react-loading-skeleton";
 
@@ -20,13 +20,31 @@ export const TrackerOverview = () => {
   const routeParams = useParams();
   const trackerId = routeParams.id?.toString() || undefined;
   const { data, isLoading, error } = useAccountData<TrackerProps>(
-    `http://localhost:5050/tracker/${trackerId}`
+    `https://spend-tracker-backend.vercel.app/tracker/${trackerId}`
   );
   const navigate = useNavigate();
   const { formatCurrency } = StringFormatter();
 
   const handleEditPageRoute = (trackerId: string) => {
     navigate(`/tracker/edit/${trackerId}`);
+  };
+
+  // TODO: add to useAccountData hook
+  const deleteTracker = async (id: string) => {
+    try {
+      const response = await fetch(
+        `https://spend-tracker-backend.vercel.app/tracker/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      navigate("/");
+    } catch (error) {
+      console.error(`A problem occurred with your fetch operation:`, error);
+    }
   };
 
   if (error)
@@ -100,12 +118,21 @@ export const TrackerOverview = () => {
         </div>
       </section>
       {data && (
-        <div
-          onClick={() => handleEditPageRoute(data._id)}
-          className="p-2 gap-2 cursor-pointer text-slate-400 hover:text-slate-600 rounded-md border border-black inline-block mt-4"
-        >
-          <Edit sx={{ fontSize: 20, marginRight: "8px" }} />
-          Edit Tracker
+        <div className="flex gap-x-4">
+          <div
+            onClick={() => handleEditPageRoute(data._id)}
+            className="p-2 gap-2 cursor-pointer text-slate-400 hover:text-slate-600 rounded-md border border-black inline-block mt-4"
+          >
+            <Edit sx={{ fontSize: 20, marginRight: "8px" }} />
+            Edit Tracker
+          </div>
+          <div
+            onClick={() => deleteTracker(data._id)}
+            className="p-2 gap-2 cursor-pointer text-slate-400 hover:text-slate-600 rounded-md border border-black inline-block mt-4"
+          >
+            <DeleteForever sx={{ fontSize: 20, marginRight: "8px" }} />
+            Delete Tracker
+          </div>
         </div>
       )}
     </motion.main>

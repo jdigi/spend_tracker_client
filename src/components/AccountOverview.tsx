@@ -4,7 +4,7 @@ import { TransactionList } from "./TransactionList";
 import { useNavigate, useParams } from "react-router";
 import { IconComponent } from "../util/IconComponent";
 import { StringFormatter } from "../util/StringFormatter";
-import { Edit } from "@mui/icons-material";
+import { Edit, DeleteForever } from "@mui/icons-material";
 import { PageTitle } from "./PageTitle";
 import Skeleton from "react-loading-skeleton";
 
@@ -20,13 +20,31 @@ export const AccountDetail = () => {
   const routeParams = useParams();
   const accountId = routeParams.id?.toString() || undefined;
   const { data, isLoading, error } = useAccountData<AccountProps>(
-    `http://localhost:5050/account/${accountId}`
+    `https://spend-tracker-backend.vercel.app/account/${accountId}`
   );
   const navigate = useNavigate();
   const { formatCurrency } = StringFormatter();
 
   const handleEditAccountRoute = (accountId: string) => {
     navigate(`/account/edit/${accountId}`);
+  };
+
+  // TODO: add to useAccountData hook
+  const deleteAccount = async (id: string) => {
+    try {
+      const response = await fetch(
+        `https://spend-tracker-backend.vercel.app/account/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      navigate("/");
+    } catch (error) {
+      console.error(`A problem occurred with your fetch operation:`, error);
+    }
   };
 
   if (error)
@@ -83,12 +101,21 @@ export const AccountDetail = () => {
         <h2 className="text-xl font-semibold mb-4">Transactions</h2>
         <TransactionList />
         {data && (
-          <div
-            onClick={() => handleEditAccountRoute(data._id)}
-            className="p-2 gap-2 cursor-pointer text-slate-400 hover:text-slate-600 rounded-md border border-black inline-block mt-4"
-          >
-            <Edit sx={{ fontSize: 20, marginRight: "8px" }} />
-            Edit Account
+          <div className="flex gap-x-4">
+            <div
+              onClick={() => handleEditAccountRoute(data._id)}
+              className="p-2 gap-2 cursor-pointer text-slate-400 hover:text-slate-600 rounded-md border border-black inline-block mt-4"
+            >
+              <Edit sx={{ fontSize: 20, marginRight: "8px" }} />
+              Edit Account
+            </div>
+            <div
+              onClick={() => deleteAccount(data._id)}
+              className="p-2 gap-2 cursor-pointer text-slate-400 hover:text-slate-600 rounded-md border border-black inline-block mt-4"
+            >
+              <DeleteForever sx={{ fontSize: 20, marginRight: "8px" }} />
+              Delete Account
+            </div>
           </div>
         )}
       </section>

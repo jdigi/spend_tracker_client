@@ -21,7 +21,9 @@ export const TransactionList = () => {
   useEffect(() => {
     // fetch jobs
     async function getTransactions() {
-      const response = await fetch("http://localhost:5050/transaction/");
+      const response = await fetch(
+        "https://spend-tracker-backend.vercel.app/transaction/"
+      );
       // check for errors
       if (!response.ok) {
         const message = `An error has occured: ${response.status}`;

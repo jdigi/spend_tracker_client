@@ -29,7 +29,7 @@ export const TransactionEntryForm = () => {
       setIsNew(false);
       // fetch record data
       const response = await fetch(
-        `http://localhost:5050/transaction/${transactionId}`
+        `https://spend-tracker-backend.vercel.app/transaction/${transactionId}`
       );
       // check for errors
       if (!response.ok) {
@@ -68,17 +68,20 @@ export const TransactionEntryForm = () => {
       let response;
       if (isNew) {
         // if adding a new record, use POST method to /record
-        response = await fetch("http://localhost:5050/transaction/", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(transaction),
-        });
+        response = await fetch(
+          "https://spend-tracker-backend.vercel.app/transaction/",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(transaction),
+          }
+        );
       } else {
         // if updating an existing record, use PATCH method to /record/:id
         response = await fetch(
-          `http://localhost:5050/transaction/${routeParams.id}`,
+          `https://spend-tracker-backend.vercel.app/transaction/${routeParams.id}`,
           {
             method: "PATCH",
             headers: {
