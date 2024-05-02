@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { IconComponent } from "../util/IconComponent";
 import { StringFormatter } from "../util/StringFormatter";
 import { Edit, DeleteForever } from "@mui/icons-material";
-import { PageTitle } from "./PageTitle";
+import { PageTitle } from "../components/PageTitle";
 import Skeleton from "react-loading-skeleton";
 
 interface TrackerProps {

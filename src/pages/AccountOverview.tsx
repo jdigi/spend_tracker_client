@@ -1,11 +1,11 @@
 import { useAccountData } from "../hooks/useAccountData";
 import { motion } from "framer-motion";
-import { TransactionList } from "./TransactionList";
+import { TransactionList } from "../components/TransactionList";
 import { useNavigate, useParams } from "react-router";
 import { IconComponent } from "../util/IconComponent";
 import { StringFormatter } from "../util/StringFormatter";
 import { Edit, DeleteForever } from "@mui/icons-material";
-import { PageTitle } from "./PageTitle";
+import { PageTitle } from "../components/PageTitle";
 import Skeleton from "react-loading-skeleton";
 
 interface AccountProps {
